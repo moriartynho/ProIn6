@@ -41,6 +41,7 @@ public class Program {
 				objusuarioDAO.cadastrarConta(objContaDTO);
 				System.out.println();
 				System.out.println("Cadastro realizado");
+				System.out.println();
 
 			} else if (inicOp == 2) {
 
@@ -57,6 +58,7 @@ public class Program {
 				ResultSet rsContaDAO = objusuarioDAO.autenticacaoConta(objContaDTO);
 
 				if (rsContaDAO.next()) {
+					System.out.println();
 					System.out.println("Login efetuado com sucesso");
 					login = 1;
 				} else {
