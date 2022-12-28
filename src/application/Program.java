@@ -26,7 +26,8 @@ public class Program {
 			System.out.println("Olá, escolha uma opção: \n1- Cadastro\n2- Login");
 			inicOp = sc.nextInt();
 
-			if (inicOp == 1) {
+			switch (inicOp) {
+			case 1:
 				System.out.print("Insira um nome: ");
 				nome = sc.next();
 				System.out.print("Insira uma senha: ");
@@ -42,30 +43,29 @@ public class Program {
 				System.out.println();
 				System.out.println("Cadastro realizado");
 				System.out.println();
+				
+				break;
 
-			} else if (inicOp == 2) {
+			case 2:
 
 				System.out.print("Usuário > ");
 				nome = sc.next();
 				System.out.print("Senha> ");
 				senha = sc.next();
 
-				Conta objContaDTO = new Conta();
+				objContaDTO = new Conta();
 				objContaDTO.setNome(nome);
 				objContaDTO.setSenha(senha);
 
-				ContaDAO objusuarioDAO = new ContaDAO();
+				objusuarioDAO = new ContaDAO();
 				ResultSet rsContaDAO = objusuarioDAO.autenticacaoConta(objContaDTO);
 
 				if (rsContaDAO.next()) {
 					System.out.println();
-					System.out.println("Login efetuado com sucesso");
+					System.out.println("\nLogin efetuado com sucesso\n");
 					login = 1;
 				} else {
-					System.out.println();
-					System.out.println("Usuário ou senha inválida");
-					System.out.println();
-					System.out.println();
+					System.out.println("\nUsuário ou senha inválida\n");
 				}
 			}}
 
@@ -78,17 +78,23 @@ public class Program {
 			try {
 
 				System.out.println("Olá, " + conta.getNome()
-						+ "\n\n1 - Informações de saldo\n2 - Adicionar Receita\n3 - Adicionar Despesa\n4 - Sair\n");
+						+ "\n\n1 - Informações de saldo"
+						+ "\n2 - Adicionar Receita"
+						+ "\n3 - Adicionar Despesa"
+						+ "\n4 - Sair\n");
 				respNum = sc.nextInt();
 
-				if (respNum == 1) { // Nessa opção o usuário pode visualizar opções gerais da conta
+				switch (respNum) {
+				case 1:
 					System.out.printf("Saldo: R$ %.2f%n", conta.getSaldo());
 					System.out.printf("Receita: R$ %.2f%n", conta.getSaldoReceita());
 					System.out.printf("Despesa: R$ %.2f%n", conta.getSaldoDespesa());
 					System.out.println();
+					
+					break;
 
-				} else if (respNum == 2) { // Nessa opção o usuário pode adicionar uma receita
-					conta.receitaInfo(); // Esse método imprime as informações de receita
+				case 2:
+					conta.receitaInfo();
 					System.out.println();
 					System.out.print("Insira um valor: R$ ");
 					double valRec = sc.nextDouble();
@@ -96,9 +102,11 @@ public class Program {
 					String descRec = sc.next();
 					conta.addReceita(valRec, descRec);
 					System.out.println();
-
-				} else if (respNum == 3) { // Nessa opção o usuário pode adicionar uma despesa com valor e descrição
-					conta.despesaInfo();// Esse método imprime as informações de despesa
+					
+					break;
+					
+				case 3:  
+					conta.despesaInfo();
 					System.out.println();
 					System.out.print("Insira um valor: R$ ");
 					double valDesp = sc.nextDouble();
@@ -106,17 +114,21 @@ public class Program {
 					String descDesp = sc.next();
 					conta.addDespesa(valDesp, descDesp);
 					System.out.println();
+					
+					break;
 
-				} else { // Nessa opção o usuário pode encerrar o programa
+				case 4:
 					System.out.println("Deseja sair? [y/n]");
 					respAl = sc.next().charAt(0);
+				default:
+					System.out.println("\nOpção Inválida. Selecione uma opção entre 1 e 4\n");
 				}
 			} catch (RuntimeException e) {
 				System.out.println(e.getMessage());
 				sc.nextLine();
 			}
 
-			System.out.println("Programa encerrado."); // Essa mensagem aparece quando o programa é encerrado
+			System.out.println("Programa encerrado.");
 
 		}
 

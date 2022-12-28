@@ -4,13 +4,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import entities.Conta;
 
 public class ContaDAO {
 
 	Connection conn = null;
-	
+	ArrayList<Conta> list = new ArrayList<>();
 
 	public ResultSet autenticacaoConta(Conta objContaDTO) {
 		conn = new DAOConn().conectBD();
@@ -28,7 +29,7 @@ public class ContaDAO {
 			return rs;
 
 		} catch (SQLException e) {
-			System.out.println("ContaDAO" + e);
+			System.out.println("ContaDAO Autenticação" + e);
 			return null;
 		}
 	}
@@ -49,8 +50,38 @@ public class ContaDAO {
 			pstm.close();
 
 		} catch (Exception e) {
-			System.out.println("ContaDAO" + e.getMessage());
+			System.out.println("ContaDAO Cadastro" + e.getMessage());
 		}
+
+	}
+
+	public ArrayList<Conta> pesquisarConta() {
+		conn = new DAOConn().conectBD();
+		String sql="select * from usuario";
+		ResultSet rs;
+
+		try {
+			PreparedStatement pstm = conn.prepareStatement(sql);
+			pstm = conn.prepareStatement(sql);
+			rs = pstm.executeQuery();
+			
+			while (rs.next()) {
+				Conta objContaDTO = new Conta();
+				objContaDTO.setUsuarioId(rs.getInt("id_usuario"));
+				objContaDTO.setNome(rs.getString("nome"));
+				objContaDTO.setSaldo(rs.getDouble("saldo"));
+				objContaDTO.setSaldoDespesa(rs.getDouble("despesa"));
+				objContaDTO.setSaldoReceita(rs.getDouble("receita"));
+				
+				list.add(objContaDTO);
+				
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("ContaDAO Pesquisar: " + e.getMessage());
+		}
+		
+		return list;
 
 	}
 }
