@@ -21,67 +21,71 @@ public class Program {
 		String nome, senha;
 
 		try {
-			while(login == 0) {
-			int inicOp = 0;
-			System.out.println("Olá, escolha uma opção: \n1- Cadastro\n2- Login");
-			inicOp = sc.nextInt();
+			while (login == 0) {
+				int inicOp = 0;
+				System.out.println("Olá, escolha uma opção: \n1- Cadastro\n2- Login");
+				inicOp = sc.nextInt();
 
-			switch (inicOp) {
-			case 1:
-				System.out.print("Insira um nome: ");
-				nome = sc.next();
-				System.out.print("Insira uma senha: ");
-				senha = sc.next();
+				switch (inicOp) {
+				case 1:
+					System.out.print("Insira um nome: ");
+					nome = sc.next();
+					System.out.print("Insira uma senha: ");
+					senha = sc.next();
 
-				Conta objContaDTO = new Conta();
-				objContaDTO.setNome(nome);
-				objContaDTO.setSenha(senha);
-				objContaDTO.setSaldo(null);
-
-				ContaDAO objusuarioDAO = new ContaDAO();
-				objusuarioDAO.cadastrarConta(objContaDTO);
-				System.out.println();
-				System.out.println("Cadastro realizado");
-				System.out.println();
+					
+					conta.setNome(nome);
+					conta.setSenha(senha);
 				
-				break;
 
-			case 2:
-
-				System.out.print("Usuário > ");
-				nome = sc.next();
-				System.out.print("Senha> ");
-				senha = sc.next();
-
-				objContaDTO = new Conta();
-				objContaDTO.setNome(nome);
-				objContaDTO.setSenha(senha);
-
-				objusuarioDAO = new ContaDAO();
-				ResultSet rsContaDAO = objusuarioDAO.autenticacaoConta(objContaDTO);
-
-				if (rsContaDAO.next()) {
+					ContaDAO objusuarioDAO = new ContaDAO();
+					objusuarioDAO.cadastrarConta(conta);
 					System.out.println();
-					System.out.println("\nLogin efetuado com sucesso\n");
-					login = 1;
-				} else {
-					System.out.println("\nUsuário ou senha inválida\n");
+					System.out.println("Cadastro realizado");
+					System.out.println();
+
+					break;
+
+				case 2:
+
+					System.out.print("Usuário > ");
+					nome = sc.next();
+					System.out.print("Senha> ");
+					senha = sc.next();
+
+					
+					conta.setNome(nome);
+					conta.setSenha(senha);
+					
+
+					objusuarioDAO = new ContaDAO();
+					
+					ResultSet rsContaDAO = objusuarioDAO.autenticacaoConta(conta);
+					
+
+					if (rsContaDAO.next()) {
+						objusuarioDAO.iniciarConta(conta);
+						System.out.println();
+						System.out.println("\nLogin efetuado com sucesso\n");
+						login = 1;
+						
+					} else {
+						System.out.println("\nUsuário ou senha inválida\n");
+					}
 				}
-			}}
+			}
 
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
 
 		while (respAl == 'n') {
+			ContaDAO objUsuarioDAO = new ContaDAO();
+			// objUsuarioDAO.pesquisarConta();
 
 			try {
-
-				System.out.println("Olá, " + conta.getNome()
-						+ "\n\n1 - Informações de saldo"
-						+ "\n2 - Adicionar Receita"
-						+ "\n3 - Adicionar Despesa"
-						+ "\n4 - Sair\n");
+				System.out.println("Olá, " + conta.getNome() + "\n\n1 - Informações de saldo"
+						+ "\n2 - Adicionar Receita" + "\n3 - Adicionar Despesa" + "\n4 - Sair\n");
 				respNum = sc.nextInt();
 
 				switch (respNum) {
@@ -90,10 +94,10 @@ public class Program {
 					System.out.printf("Receita: R$ %.2f%n", conta.getSaldoReceita());
 					System.out.printf("Despesa: R$ %.2f%n", conta.getSaldoDespesa());
 					System.out.println();
-					
+
 					break;
 
-				case 2:
+				case 2: // adicionar receita
 					conta.receitaInfo();
 					System.out.println();
 					System.out.print("Insira um valor: R$ ");
@@ -102,10 +106,11 @@ public class Program {
 					String descRec = sc.next();
 					conta.addReceita(valRec, descRec);
 					System.out.println();
-					
+					objUsuarioDAO.atualizaDados(conta);
+
 					break;
-					
-				case 3:  
+
+				case 3: // adicionar despesa
 					conta.despesaInfo();
 					System.out.println();
 					System.out.print("Insira um valor: R$ ");
@@ -114,21 +119,24 @@ public class Program {
 					String descDesp = sc.next();
 					conta.addDespesa(valDesp, descDesp);
 					System.out.println();
-					
+					objUsuarioDAO.atualizaDados(conta);
+
 					break;
 
 				case 4:
 					System.out.println("Deseja sair? [y/n]");
 					respAl = sc.next().charAt(0);
+					System.out.println("Programa encerrado.");
 				default:
 					System.out.println("\nOpção Inválida. Selecione uma opção entre 1 e 4\n");
+					break;
 				}
 			} catch (RuntimeException e) {
 				System.out.println(e.getMessage());
 				sc.nextLine();
 			}
 
-			System.out.println("Programa encerrado.");
+			
 
 		}
 

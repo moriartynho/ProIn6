@@ -17,19 +17,16 @@ public class ContaDAO {
 		conn = new DAOConn().conectBD();
 
 		try {
-			String sql = "select * from usuario where nome_usuario = ? and senha_usuario = ? and saldo = ? and despesa = ? and receita = ?";
+			String sql = "select * from usuario where nome_usuario = ? and senha_usuario = ?";
 
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, objContaDTO.getNome());
 			pstm.setString(2, objContaDTO.getSenha());
-			pstm.setDouble(3, objContaDTO.getSaldo());
-			pstm.setDouble(4, objContaDTO.getSaldoDespesa());
-			pstm.setDouble(5, objContaDTO.getSaldoReceita());
 			ResultSet rs = pstm.executeQuery();
 			return rs;
 
 		} catch (SQLException e) {
-			System.out.println("ContaDAO Autenticação" + e);
+			System.out.println("ContaDAO Autenticação: " + e);
 			return null;
 		}
 	}
@@ -37,14 +34,12 @@ public class ContaDAO {
 	public void cadastrarConta(Conta objContaDTO) {
 		conn = new DAOConn().conectBD();
 		try {
-			String sql = "insert into usuario (nome_usuario, senha_usuario, saldo, despesa, receita) values (?, ? , ?, ?, ?)";
+			String sql = "insert into usuario (nome_usuario, senha_usuario) values (?, ?)";
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, objContaDTO.getNome());
 			pstm.setString(2, objContaDTO.getSenha());
-			pstm.setDouble(3, objContaDTO.getSaldo());
-			pstm.setDouble(4, objContaDTO.getSaldoDespesa());
-			pstm.setDouble(5, objContaDTO.getSaldoReceita());
+			
 
 			pstm.execute();
 			pstm.close();
@@ -55,33 +50,49 @@ public class ContaDAO {
 
 	}
 
-	public ArrayList<Conta> pesquisarConta() {
+	public void iniciarConta(Conta conta) {
 		conn = new DAOConn().conectBD();
-		String sql="select * from usuario";
-		ResultSet rs;
+		
 
 		try {
+			String sql = "select * from usuario WHERE nome_usuario = ? and senha_usuario = ?";
 			PreparedStatement pstm = conn.prepareStatement(sql);
-			pstm = conn.prepareStatement(sql);
-			rs = pstm.executeQuery();
-			
-			while (rs.next()) {
-				Conta objContaDTO = new Conta();
-				objContaDTO.setUsuarioId(rs.getInt("id_usuario"));
-				objContaDTO.setNome(rs.getString("nome"));
-				objContaDTO.setSaldo(rs.getDouble("saldo"));
-				objContaDTO.setSaldoDespesa(rs.getDouble("despesa"));
-				objContaDTO.setSaldoReceita(rs.getDouble("receita"));
-				
-				list.add(objContaDTO);
-				
+			pstm.setString(1, conta.getNome());
+			pstm.setString(2, conta.getSenha());
+			ResultSet rs = pstm.executeQuery();
+
+			if (rs.next()) {
+				conta.setUsuarioId(rs.getInt("id_usuario"));
+				conta.setNome(rs.getString("nome_usuario"));
+				conta.setSenha(rs.getString("senha_usuario"));
+				conta.setSaldo(rs.getDouble("saldo"));
+				conta.setSaldoDespesa(rs.getDouble("despesa"));
+				conta.setSaldoReceita(rs.getDouble("receita"));
+			} else {
+				System.out.println("Erro ao iniciar");;
 			}
-			
+
 		} catch (SQLException e) {
-			System.out.println("ContaDAO Pesquisar: " + e.getMessage());
+			System.out.println("Conta DAO: inicializar: " + e.getMessage());
 		}
 		
-		return list;
 
+	}
+
+	public void atualizaDados(Conta conta) {
+		conn = new DAOConn().conectBD();
+		String sql = "UPDATE usuario SET saldo = ?, despesa = ?, receita = ? WHERE usuario.id_usuario = ?";
+		try {
+			PreparedStatement pstm = conn.prepareStatement(sql);
+			pstm.setDouble(1, conta.getSaldo());
+			pstm.setDouble(2, conta.getSaldoDespesa());
+			pstm.setDouble(3, conta.getSaldoReceita());
+			pstm.setInt(4, conta.getUsuarioId());
+			pstm.execute();
+			pstm.close();
+
+		} catch (SQLException e) {
+			System.out.println("Conta DAO Atualiza: " + e.getMessage());
+		}
 	}
 }

@@ -3,6 +3,8 @@ package entities;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 public class Conta {
 
 	private Integer usuarioId;
@@ -33,7 +35,7 @@ public class Conta {
 		this.receita = receita;
 		this.descRec = descRec;
 	}
-	
+
 	public Integer getUsuarioId() {
 		return usuarioId;
 	}
@@ -95,7 +97,9 @@ public class Conta {
 
 	public void receitaInfo() { // imprime informações de receita
 		System.out.println("\nSALDO DE RECEITA: R$ " + getSaldoReceita() + "\n");
-		for (Double x : getReceita()) {
+		getReceita().forEach(System.out::print);
+		getDescRec().forEach(System.out::println);
+		/*for (Double x : getReceita()) {
 			for (String y : getDescRec()) {
 				if (y == "") {
 					System.out.println("Sem descrição" + " - " + "R$ " + x);
@@ -103,7 +107,7 @@ public class Conta {
 					System.out.println(y + " - " + "R$ " + x);
 				}
 			}
-		}
+		}*/
 	}
 
 	public void despesaInfo() { // imprime informações de despesa
@@ -128,6 +132,7 @@ public class Conta {
 
 	public void setSaldoDespesa(Double saldoDespesa) {
 		this.saldoDespesa = saldoDespesa;
+
 	}
 
 	public Double getSaldoReceita() { // retorna saldo de receitas
