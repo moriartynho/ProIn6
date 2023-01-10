@@ -84,6 +84,7 @@ public class Program {
 			// objUsuarioDAO.pesquisarConta();
 
 			try {
+				
 				System.out.println("Olá, " + conta.getNome() + "\n\n1 - Informações de saldo"
 						+ "\n2 - Adicionar Receita" + "\n3 - Adicionar Despesa" + "\n4 - Sair\n");
 				respNum = sc.nextInt();
@@ -98,7 +99,7 @@ public class Program {
 					break;
 
 				case 2: // adicionar receita
-					conta.receitaInfo();
+				//	conta.receitaInfo();
 					System.out.println();
 					System.out.print("Insira um valor: R$ ");
 					double valRec = sc.nextDouble();
@@ -111,7 +112,7 @@ public class Program {
 					break;
 
 				case 3: // adicionar despesa
-					conta.despesaInfo();
+				//	conta.despesaInfo();
 					System.out.println();
 					System.out.print("Insira um valor: R$ ");
 					double valDesp = sc.nextDouble();

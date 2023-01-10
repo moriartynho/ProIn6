@@ -20,10 +20,9 @@ public class Conta {
 
 	public Conta() {
 	}
-
+	
 	public Conta(Integer usuarioId, String nome, String senha, Double saldo, Double saldoReceita, Double saldoDespesa,
 			List<Double> despesa, List<String> descDesp, List<Double> receita, List<String> descRec) {
-		super();
 		this.usuarioId = usuarioId;
 		this.nome = nome;
 		this.senha = senha;
@@ -36,63 +35,141 @@ public class Conta {
 		this.descRec = descRec;
 	}
 
+
+
+
 	public Integer getUsuarioId() {
 		return usuarioId;
 	}
+
+
 
 	public void setUsuarioId(Integer usuarioId) {
 		this.usuarioId = usuarioId;
 	}
 
-	public String getSenha() {
-		return senha;
-	}
 
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
-
-	public void setSaldo(Double saldo) {
-		this.saldo = saldo;
-	}
-
-	public void setDespesa(List<Double> despesa) {
-		this.despesa = despesa;
-	}
-
-	public void setReceita(List<Double> receita) {
-		this.receita = receita;
-	}
 
 	public String getNome() {
 		return nome;
 	}
 
+
+
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
 
-	public Double getSaldo() { // retorna o saldo total
-		saldo = getSaldoReceita() - getSaldoDespesa();
+
+
+	public String getSenha() {
+		return senha;
+	}
+
+
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+
+
+
+	public Double getSaldo() {
 		return saldo;
 	}
+
+
+
+	public void setSaldo(Double saldo) {
+		this.saldo = saldo;
+	}
+
+
+
+	public Double getSaldoReceita() {
+		return saldoReceita;
+	}
+
+
+
+	public void setSaldoReceita(Double saldoReceita) {
+		this.saldoReceita = saldoReceita;
+	}
+
+
+
+	public Double getSaldoDespesa() {
+		return saldoDespesa;
+	}
+
+
+
+	public void setSaldoDespesa(Double saldoDespesa) {
+		this.saldoDespesa = saldoDespesa;
+	}
+
+
 
 	public List<Double> getDespesa() {
 		return despesa;
 	}
 
+
+
+	public void setDespesa(List<Double> despesa) {
+		this.despesa = despesa;
+	}
+
+
+
+	public List<String> getDescDesp() {
+		return descDesp;
+	}
+
+
+
+	public void setDescDesp(List<String> descDesp) {
+		this.descDesp = descDesp;
+	}
+
+
+
 	public List<Double> getReceita() {
 		return receita;
 	}
 
+
+
+	public void setReceita(List<Double> receita) {
+		this.receita = receita;
+	}
+
+
+
+	public List<String> getDescRec() {
+		return descRec;
+	}
+
+
+
+	public void setDescRec(List<String> descRec) {
+		this.descRec = descRec;
+	}
+
+
+
 	public void addDespesa(Double valorRec, String descDespRec) { // Adicionar despesa
 		despesa.add(valorRec);
 		descDesp.add(descDespRec);
+		atualizaSaldoDespesa();
+		atualizaSaldo();
 	}
 
 	public void addReceita(Double valorRec, String descRecRec) { // Adicionar receita
 		receita.add(valorRec);
 		descRec.add(descRecRec);
+		atualizaSaldoReceita();
+		atualizaSaldo();
 	}
 
 	public void receitaInfo() { // imprime informações de receita
@@ -120,54 +197,25 @@ public class Conta {
 		}
 
 	}
-
-	public Double getSaldoDespesa() { // retorna saldo de despesas
-		double somaDesp = 0;
-		for (Double x : getDespesa()) {
-			somaDesp += x.doubleValue();
-		}
-		saldoDespesa = somaDesp;
-		return saldoDespesa;
+	
+	public void atualizaSaldoDespesa() {
+		double sum = 0;
+		for(Double x:getDespesa()) {
+			sum += x;
+		} setSaldoDespesa(sum);
 	}
-
-	public void setSaldoDespesa(Double saldoDespesa) {
-		this.saldoDespesa = saldoDespesa;
-
+	
+	public void atualizaSaldoReceita() {
+		double sum = 0;
+		for(Double x:getReceita()) {
+			sum += x;
+		} setSaldoReceita(sum);
 	}
-
-	public Double getSaldoReceita() { // retorna saldo de receitas
-		double somaRec = 0;
-		for (Double x : getReceita()) {
-			somaRec += x.doubleValue();
-		}
-		saldoReceita = somaRec;
-		return saldoReceita;
+	
+	public void atualizaSaldo() {
+		double saldoAtu = getSaldoReceita() - getSaldoDespesa();
+		setSaldo(saldoAtu);
 	}
-
-	public void setSaldoReceita(Double saldoReceita) {
-		this.saldoReceita = saldoReceita;
-	}
-
-	public List<String> getDescDesp() {
-		return descDesp;
-	}
-
-	public void setDescDesp(List<String> descDesp) {
-		this.descDesp = descDesp;
-	}
-
-	public List<String> getDescRec() {
-		return descRec;
-	}
-
-	public void setDescRec(List<String> descRec) {
-		this.descRec = descRec;
-	}
-
-	@Override
-	public String toString() {
-		return "Conta [nome=" + nome + ", saldo=" + saldo + ", despesa=" + despesa + ", receita=" + receita
-				+ "saldoDespesa=" + saldoDespesa + "]";
-	}
+	
 
 }
