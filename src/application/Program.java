@@ -2,6 +2,8 @@ package application;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -16,6 +18,7 @@ public class Program {
 		Locale.setDefault(Locale.US);
 
 		Conta conta = new Conta();
+		LocalDateTime localDate = LocalDateTime.now();
 		int respNum = 0, login = 0;
 		char respAl = 'n';
 		String nome, senha;
@@ -99,26 +102,26 @@ public class Program {
 					break;
 
 				case 2: // adicionar receita
-				//	conta.receitaInfo();
+					conta.receitaInfo();
 					System.out.println();
 					System.out.print("Insira um valor: R$ ");
 					double valRec = sc.nextDouble();
 					System.out.print("Insira uma descrição: ");
 					String descRec = sc.next();
-					conta.addReceita(valRec, descRec);
+					conta.addReceita(valRec, descRec, localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
 					System.out.println();
 					objUsuarioDAO.atualizaDados(conta);
 
 					break;
 
 				case 3: // adicionar despesa
-				//	conta.despesaInfo();
+					conta.despesaInfo();
 					System.out.println();
 					System.out.print("Insira um valor: R$ ");
 					double valDesp = sc.nextDouble();
 					System.out.print("Insira uma descrição: ");
 					String descDesp = sc.next();
-					conta.addDespesa(valDesp, descDesp);
+					conta.addDespesa(valDesp, descDesp, localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
 					System.out.println();
 					objUsuarioDAO.atualizaDados(conta);
 
@@ -137,7 +140,6 @@ public class Program {
 				sc.nextLine();
 			}
 
-			
 
 		}
 
