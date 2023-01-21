@@ -3,6 +3,8 @@ package entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import services.Transac;
+
 public class Conta {
 
 	private Integer usuarioId;
@@ -17,6 +19,7 @@ public class Conta {
 	private List<String> descRec = new ArrayList<>();
 	private List <String> dateDesp = new ArrayList<>();
 	private List <String> dateRec = new ArrayList<>();
+	private List<Transac> transac;
 
 	public Conta() {
 	}
