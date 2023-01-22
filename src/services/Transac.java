@@ -1,12 +1,15 @@
 package services;
 
 public class Transac {
-	private double quant;
-    private String desc;
-    private String data;
-    private boolean isRend;
+	private Double quant;
+	private String desc;
+	private String data;
+	private Boolean isRend;
 
-    public Transac(double quant, String desc, String data, boolean isRend) {
+	public Transac() {
+	}
+
+	public Transac(double quant, String desc, String data, boolean isRend) {
 		this.quant = quant;
 		this.desc = desc;
 		this.data = data;
@@ -43,6 +46,34 @@ public class Transac {
 
 	public void setRend(boolean isRend) {
 		this.isRend = isRend;
+	}
+
+	public static String testeTipo(boolean tipo) {
+		if (tipo == true) {
+			return "Entrada";
+		} else
+			return "Saída";
+	}
+
+	public Boolean getIsRend() {
+		return isRend;
+	}
+
+	public void setIsRend(Boolean isRend) {
+		this.isRend = isRend;
+	}
+
+	public void setQuant(Double quant) {
+		this.quant = quant;
+	}
+
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
+
+	@Override
+	public String toString() {
+		return "R$ " + quant + " - " + testeTipo(isRend()) + " (" + data + ") - " + desc;
 	}
 
 }

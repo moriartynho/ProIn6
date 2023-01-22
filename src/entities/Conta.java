@@ -3,6 +3,8 @@ package entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import services.Despesa;
+import services.Receita;
 import services.Transac;
 
 public class Conta {
@@ -13,35 +15,25 @@ public class Conta {
 	private Double saldo;
 	private Double saldoReceita;
 	private Double saldoDespesa;
-	private List<Double> despesa = new ArrayList<>();
-	private List<String> descDesp = new ArrayList<>();
-	private List<Double> receita = new ArrayList<>();
-	private List<String> descRec = new ArrayList<>();
-	private List <String> dateDesp = new ArrayList<>();
-	private List <String> dateRec = new ArrayList<>();
-	private List<Transac> transac;
+	private List<Transac> transac = new ArrayList<>();
+	private List<Receita> receita = new ArrayList<>();
+	private List<Despesa> despesa = new ArrayList<>();
 
 	public Conta() {
 	}
 
 	public Conta(Integer usuarioId, String nome, String senha, Double saldo, Double saldoReceita, Double saldoDespesa,
-			List<Double> despesa, List<String> descDesp, List<Double> receita, List<String> descRec,
-			List<String> dateDesp, List<String> dateRec) {
-		super();
+			List<Transac> transac, List<Receita> receita, List<Despesa> despesa) {
 		this.usuarioId = usuarioId;
 		this.nome = nome;
 		this.senha = senha;
 		this.saldo = saldo;
 		this.saldoReceita = saldoReceita;
 		this.saldoDespesa = saldoDespesa;
-		this.despesa = despesa;
-		this.descDesp = descDesp;
+		this.transac = transac;
 		this.receita = receita;
-		this.descRec = descRec;
-		this.dateDesp = dateDesp;
-		this.dateRec = dateRec;
+		this.despesa = despesa;
 	}
-
 
 	public Integer getUsuarioId() {
 		return usuarioId;
@@ -91,121 +83,99 @@ public class Conta {
 		this.saldoDespesa = saldoDespesa;
 	}
 
-	public List<Double> getDespesa() {
-		return despesa;
+	public List<Transac> getTransac() {
+		return transac;
 	}
 
-	public void setDespesa(List<Double> despesa) {
-		this.despesa = despesa;
+	public void setTransac(List<Transac> transac) {
+		this.transac = transac;
 	}
 
-	public List<String> getDescDesp() {
-		return descDesp;
-	}
+	public void newTransac(Double valor, String desc, String data, boolean tipo) {
+		if (tipo == true) {
+			receita(valor, desc, data);
+			transac.add(new Transac(valor, desc, data, tipo));
 
-	public void setDescDesp(List<String> descDesp) {
-		this.descDesp = descDesp;
-	}
-
-	public List<Double> getReceita() {
-		return receita;
-	}
-
-	public void setReceita(List<Double> receita) {
-		this.receita = receita;
-	}
-
-	public List<String> getDescRec() {
-		return descRec;
-	}
-
-	public void setDescRec(List<String> descRec) {
-		this.descRec = descRec;
-	}
-
-	public List<String> getDateDesp() {
-		return dateDesp;
-	}
-
-
-	public void setDateDesp(List<String> dateDesp) {
-		this.dateDesp = dateDesp;
-	}
-
-	public List<String> getDateRec() {
-		return dateRec;
-	}
-
-	public void setDateRec(List<String> dateRec) {
-		this.dateRec = dateRec;
-	}
-
-	public void addDespesa(Double valorRec, String descDespRec, String localDateTime) { // Adicionar despesa
-		despesa.add(valorRec);
-		dateDesp.add(localDateTime);
-		if(descDespRec!=" ") {
-		descDesp.add(descDespRec);
 		} else {
-			descDesp.add("Sem descrição");
+			despesa(valor, desc, data);
+			transac.add(new Transac(valor, desc, data, tipo));
 		}
-		atualizaSaldoDespesa();
-		atualizaSaldo();
-	}
-
-	public void addReceita(Double valorRec, String descRecRec, String localDateTime) { // Adicionar receita
-		receita.add(valorRec);
-		dateRec.add(localDateTime);
-		if(descRecRec!=" ") {
-		descRec.add(descRecRec);
-		} else {
-			descRec.add("Sem descrição");
-		}
-		atualizaSaldoReceita();
-		atualizaSaldo();
-	}
-
-	public void receitaInfo() { // imprime informações de receita
-		//atualizaSaldoReceita();
-		//atualizaSaldo();
-		System.out.println("\nSALDO DE RECEITA: R$ " + getSaldoReceita() + "\n");
-
-		for (int i = 0; i < getReceita().size(); i++) {
-			System.out.println("R$" + getReceita().get(i) + " - " + getDescRec().get(i)+" ("+getDateRec().get(i)+")");
-		}
-	}
-
-	public void despesaInfo() { // imprime informações de despesa
-		//atualizaSaldoDespesa();
-		//atualizaSaldo();
-		System.out.println("\nSALDO DE DESPESA: R$ " + getSaldoDespesa() + "\n");
-
-		for (int i = 0; i < getDespesa().size(); i++) {
-			System.out.println("R$" + getDespesa().get(i) + " - " + getDescDesp().get(i)+" ("+getDateDesp().get(i)+")");
-		}
+		atualSaldo();
 
 	}
 
-	public void atualizaSaldoDespesa() {
-		double sum = 0;
-		for (Double x : getDespesa()) {
-			sum += x;
-		}
-		setSaldoDespesa(sum);
-		System.out.println("\nSaldo atualizado\n");
+	public void novaReceita(Double valor, String desc, String data) {
+		receita.add(new Receita(valor, desc, data));
 	}
 
-	public void atualizaSaldoReceita() {
-		double sum = 0;
-		for (Double x : getReceita()) {
-			sum += x;
-		}
-		setSaldoReceita(sum);
-		System.out.println("\nSaldo atualizado\n");
+	public void novaDespesa(Double valor, String desc, String data) {
+		despesa.add(new Despesa(valor, desc, data));
 	}
 
-	public void atualizaSaldo() {
-		double saldoAtu = getSaldoReceita() - getSaldoDespesa();
-		setSaldo(saldoAtu);
+	public void imprimir() {
+		for (int i = 0; i < getTransac().size(); i++) {
+			System.out.println(getTransac().get(i) + "\n");
+		}
+	}
+
+	public void imprimeReceita() {
+		for (int i = 0; i < receita.size(); i++) {
+			int in = i + 1;
+			System.out.println(in + " - " + receita.get(i) + "\n");
+		}
+	}
+
+	public void imprimeDespesa() {
+		for (int i = 0; i < despesa.size(); i++) {
+			int in = i + 1;
+			System.out.println(in + " - " + despesa.get(i) + "\n");
+		}
+	}
+
+	public void receita(Double valor, String desc, String data) {
+		novaReceita(valor, desc, data);
+		atualSaldReceita();
+		;
+	}
+
+	public void despesa(Double valor, String desc, String data) {
+		novaDespesa(valor, desc, data);
+		atualSaldDespesa();
+	}
+
+	public void atualSaldo() {
+		double novoValor = getSaldoReceita() - getSaldoDespesa();
+		setSaldo(novoValor);
+	}
+
+	public void atualSaldDespesa() {
+		Double total = 0.0;
+		for (Despesa x : despesa) {
+			total += x.getValor();
+		}
+		setSaldoDespesa(total);
+	}
+
+	public void atualSaldReceita() {
+		Double total = 0.0;
+		for (Receita x : receita) {
+			total += x.getValor();
+		}
+		setSaldoReceita(total);
+	}
+
+	public void inacRec(Integer i) {
+		int in = i - 1;
+		receita.remove(in);
+		atualSaldReceita();
+		atualSaldo();
+	}
+
+	public void inacDesp(Integer i) {
+		int in = i - 1;
+		despesa.remove(in);
+		atualSaldDespesa();
+		atualSaldo();
 	}
 
 }

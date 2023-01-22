@@ -19,6 +19,7 @@ public class Program {
 
 		Conta conta = new Conta();
 		LocalDateTime localDate = LocalDateTime.now();
+		boolean income = true, expense = false;
 		int respNum = 0, login = 0;
 		char respAl = 'n';
 		String nome, senha;
@@ -36,10 +37,8 @@ public class Program {
 					System.out.print("Insira uma senha: ");
 					senha = sc.next();
 
-					
 					conta.setNome(nome);
 					conta.setSenha(senha);
-				
 
 					ContaDAO objusuarioDAO = new ContaDAO();
 					objusuarioDAO.cadastrarConta(conta);
@@ -56,22 +55,19 @@ public class Program {
 					System.out.print("Senha> ");
 					senha = sc.next();
 
-					
 					conta.setNome(nome);
 					conta.setSenha(senha);
-					
 
 					objusuarioDAO = new ContaDAO();
-					
+
 					ResultSet rsContaDAO = objusuarioDAO.autenticacaoConta(conta);
-					
 
 					if (rsContaDAO.next()) {
 						objusuarioDAO.iniciarConta(conta);
 						System.out.println();
 						System.out.println("\nLogin efetuado com sucesso\n");
 						login = 1;
-						
+
 					} else {
 						System.out.println("\nUsuário ou senha inválida\n");
 					}
@@ -87,43 +83,82 @@ public class Program {
 			// objUsuarioDAO.pesquisarConta();
 
 			try {
-				
-				System.out.println("Olá, " + conta.getNome() + "\n\n1 - Informações de saldo"
-						+ "\n2 - Adicionar Receita" + "\n3 - Adicionar Despesa" + "\n4 - Sair\n");
+
+				System.out.println("Olá, " + conta.getNome() + "\n\nSaldo: " + conta.getSaldo() + "\nReceita: "
+						+ conta.getSaldoReceita() + "\nDespesa: " + conta.getSaldoDespesa() + "\n\n1 - Histórico"
+						+ "\n2 - Receita" + "\n3 - Despesa" + "\n4 - Sair\n");
 				respNum = sc.nextInt();
 
 				switch (respNum) {
 				case 1:
-					System.out.printf("Saldo: R$ %.2f%n", conta.getSaldo());
-					System.out.printf("Receita: R$ %.2f%n", conta.getSaldoReceita());
-					System.out.printf("Despesa: R$ %.2f%n", conta.getSaldoDespesa());
-					System.out.println();
+					conta.imprimir();
 
 					break;
 
-				case 2: // adicionar receita
-					conta.receitaInfo();
-					System.out.println();
-					System.out.print("Insira um valor: R$ ");
-					double valRec = sc.nextDouble();
-					System.out.print("Insira uma descrição: ");
-					String descRec = sc.next();
-					conta.addReceita(valRec, descRec, localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
-					System.out.println();
-					objUsuarioDAO.atualizaDados(conta);
+				case 2:
+					int recResp = 0;
+					System.out.println("Selecione uma opção: \n10 - Adicionar Receita\n20 - Remover Receita");
+					recResp = sc.nextInt();
+					switch (recResp) {
+					case 10:
+						System.out.println();
+						conta.imprimeReceita();
+						System.out.print("Insira um valor: R$ ");
+						double valRec = sc.nextDouble();
+						System.out.print("Insira uma descrição: ");
+						String descRec = sc.next();
+						conta.newTransac(valRec, descRec, localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")),
+								income);
+						System.out.println();
+						objUsuarioDAO.atualizaDados(conta);
+						break;
+					case 20:
+						System.out.println();
+						conta.imprimeReceita();
+						System.out.print("Indique o número da receita que deseja remover: ");
+						int i = sc.nextInt();
+						conta.inacRec(i);
+						conta.imprimeReceita();
+						break;
+
+					default:
+						System.out.println("\nOpção Inválida. Selecione as opções 10 ou 20\n");
+						break;
+					}
 
 					break;
 
-				case 3: // adicionar despesa
-					conta.despesaInfo();
-					System.out.println();
-					System.out.print("Insira um valor: R$ ");
-					double valDesp = sc.nextDouble();
-					System.out.print("Insira uma descrição: ");
-					String descDesp = sc.next();
-					conta.addDespesa(valDesp, descDesp, localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
-					System.out.println();
-					objUsuarioDAO.atualizaDados(conta);
+				case 3:
+					int despResp = 0;
+					System.out.println("Selecione uma opção: \n30 - Adicionar Despesa\n40 - Remover Despesa");
+					despResp = sc.nextInt();
+					switch (despResp) {
+					case 30:
+						System.out.println();
+						conta.imprimeDespesa();
+						System.out.print("Insira um valor: R$ ");
+						double valDesp = sc.nextDouble();
+						System.out.print("Insira uma descrição: ");
+						String descDesp = sc.next();
+						conta.newTransac(valDesp, descDesp, localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")),
+								expense);
+						System.out.println();
+						objUsuarioDAO.atualizaDados(conta);
+						break;
+
+					case 40:
+						System.out.println();
+						conta.imprimeDespesa();
+						System.out.print("Indique o número da despesa que deseja remover: ");
+						int i = sc.nextInt();
+						conta.inacDesp(i);
+						conta.imprimeDespesa();
+						break;
+
+					default:
+						System.out.println("\nOpção Inválida. Selecione as opções 30 ou 40\n");
+						break;
+					}
 
 					break;
 
@@ -139,7 +174,6 @@ public class Program {
 				System.out.println(e.getMessage());
 				sc.nextLine();
 			}
-
 
 		}
 
