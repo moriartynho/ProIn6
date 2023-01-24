@@ -93,23 +93,16 @@ public class Conta {
 
 	public void newTransac(Double valor, String desc, String data, boolean tipo) {
 		if (tipo == true) {
-			receita(valor, desc, data);
+			receita.add(new Receita(valor, desc, data));
 			transac.add(new Transac(valor, desc, data, tipo));
-
+			atualSaldReceita();
 		} else {
-			despesa(valor, desc, data);
+			despesa.add(new Despesa(valor, desc, data));
 			transac.add(new Transac(valor, desc, data, tipo));
+			atualSaldDespesa();
 		}
 		atualSaldo();
 
-	}
-
-	public void novaReceita(Double valor, String desc, String data) {
-		receita.add(new Receita(valor, desc, data));
-	}
-
-	public void novaDespesa(Double valor, String desc, String data) {
-		despesa.add(new Despesa(valor, desc, data));
 	}
 
 	public void imprimir() {
@@ -130,17 +123,6 @@ public class Conta {
 			int in = i + 1;
 			System.out.println(in + " - " + despesa.get(i) + "\n");
 		}
-	}
-
-	public void receita(Double valor, String desc, String data) {
-		novaReceita(valor, desc, data);
-		atualSaldReceita();
-		;
-	}
-
-	public void despesa(Double valor, String desc, String data) {
-		novaDespesa(valor, desc, data);
-		atualSaldDespesa();
 	}
 
 	public void atualSaldo() {

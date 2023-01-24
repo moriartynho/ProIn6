@@ -43,5 +43,4 @@ public class Despesa {
 	public String toString() {
 		return "R$ " + valor + " - " +  desc + " (" + data + ")";
 	}
-	
 }
