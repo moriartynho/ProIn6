@@ -40,7 +40,6 @@ public class ContaDAO {
 			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, objContaDTO.getNome());
 			pstm.setString(2, objContaDTO.getSenha());
-			
 
 			pstm.execute();
 			pstm.close();
@@ -53,7 +52,6 @@ public class ContaDAO {
 
 	public void iniciarConta(Conta conta) {
 		conn = new DAOConn().conectBD();
-		
 
 		try {
 			String sql = "select * from usuario WHERE nome_usuario = ? and senha_usuario = ?";
@@ -71,13 +69,13 @@ public class ContaDAO {
 				conta.setSaldoReceita(0.0);
 				carregaInfo(conta);
 			} else {
-				System.out.println("Erro ao iniciar");;
+				System.out.println("Erro ao iniciar");
+				;
 			}
 
 		} catch (SQLException e) {
 			System.out.println("Conta DAO: inicializar: " + e.getMessage());
 		}
-		
 
 	}
 
@@ -91,7 +89,7 @@ public class ContaDAO {
 			pstm.setBoolean(3, tipo);
 			pstm.setString(4, data);
 			pstm.setInt(5, usuarioId);
-			
+
 			pstm.execute();
 			pstm.close();
 
@@ -99,7 +97,7 @@ public class ContaDAO {
 			System.out.println("Conta DAO Nova Transacao: " + e.getMessage());
 		}
 	}
-	
+
 	public void novaTarefaBD(String titulo, String data, Double valor, Integer usuarioId) {
 		conn = new DAOConn().conectBD();
 		String sql = "insert into tarefas (titulo, data, valor, usuario_id) values(?, ?, ?, ?)";
@@ -109,15 +107,15 @@ public class ContaDAO {
 			pstm.setString(2, data);
 			pstm.setDouble(3, valor);
 			pstm.setInt(4, usuarioId);
-			
+
 			pstm.execute();
 			pstm.close();
-			
+
 		} catch (SQLException e) {
 			System.out.println("Conta DAO Nova Tarefa: " + e.getMessage());
 		}
 	}
-	
+
 	public void carregaInfo(Conta conta) {
 		conn = new DAOConn().conectBD();
 		String sql = "select * from transac WHERE usuario_id = ?";
@@ -125,20 +123,72 @@ public class ContaDAO {
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setInt(1, conta.getUsuarioId());
 			ResultSet rs = pstm.executeQuery();
-			
-			while(rs.next()){
+
+			while (rs.next()) {
+				Integer id = rs.getInt("id_transac");
 				String desc = rs.getString("descricao");
 				Double valor = rs.getDouble("valor");
 				boolean tipo = rs.getBoolean("tipo");
 				String data = rs.getString("data");
-				conta.novaTransacao(valor, desc, data, tipo);
+				conta.novaTransacao(id, valor, desc, data, tipo);
 			}
-			
-			
-			
+
 		} catch (SQLException e) {
 			System.out.println("Conta DAO Carrega: " + e.getMessage());
 		}
 	}
+
+	public void removeNoBD(Integer id) {
+		conn = new DAOConn().conectBD();
+		String sql = "DELETE FROM transac WHERE transac.id_transac = ?";
+		try {
+
+			PreparedStatement pstm = conn.prepareStatement(sql);
+			pstm.setInt(1, id);
+			
+			pstm.execute();
+			pstm.close();
+
+		} catch (SQLException e) {
+			System.out.println("Conta DAO Deleta: " + e.getMessage());
+		}
+	}
 	
+	public void limparDados(Integer id) {
+		limparDadosDeTransacao(id);
+		limparDadosDeTarefa(id);
+	}
+	
+	public void limparDadosDeTarefa(Integer usuarioId) {
+		conn = new DAOConn().conectBD();
+		String sql = "DELETE FROM tarefas WHERE usuario_id = ?";
+		try {
+			PreparedStatement pstm = conn.prepareStatement(sql);
+			pstm.setInt(1, usuarioId);
+			
+			pstm.execute();
+			pstm.close();
+			
+			
+		} catch (SQLException e) {
+			System.out.println("Conta DAO Limpar Dados: " + e.getMessage());
+		}
+	}
+
+	public void limparDadosDeTransacao(Integer usuarioId) {
+		conn = new DAOConn().conectBD();
+		String sql = "DELETE FROM transac WHERE usuario_id = ?";
+		try {
+			PreparedStatement pstm = conn.prepareStatement(sql);
+			pstm.setInt(1, usuarioId);
+			
+			pstm.execute();
+			pstm.close();
+			
+			
+		} catch (SQLException e) {
+			System.out.println("Conta DAO Limpar Dados: " + e.getMessage());
+		}
+	}
+
 }

@@ -84,7 +84,7 @@ public class Program {
 
 				System.out.println("Olá, " + conta.getNome() + "\n\nSaldo: " + conta.getSaldo() + "\nReceita: "
 						+ conta.getSaldoReceita() + "\nDespesa: " + conta.getSaldoDespesa() + "\n\n1 - Histórico"
-						+ "\n2 - Receita" + "\n3 - Despesa" + "\n4 - Tarefa" + "\n5 - Sair\n");
+						+ "\n2 - Receita" + "\n3 - Despesa" + "\n4 - Tarefa" +"\n5 - Limpar dados" +"\n6 - Sair\n");
 				respNum = sc.nextInt();
 
 				switch (respNum) {
@@ -105,7 +105,7 @@ public class Program {
 						double valRec = sc.nextDouble();
 						System.out.print("Insira uma descrição: ");
 						String descRec = sc.next();
-						conta.novaTransacao(valRec, descRec,
+						conta.novaTransacao(null, valRec, descRec,
 								localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), receita);
 						System.out.println();
 						objUsuarioDAO.novaTransacaoBD(valRec, descRec,
@@ -140,7 +140,7 @@ public class Program {
 						double valDesp = sc.nextDouble();
 						System.out.print("Insira uma descrição: ");
 						String descDesp = sc.next();
-						conta.novaTransacao(valDesp, descDesp,
+						conta.novaTransacao(null, valDesp, descDesp,
 								localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), despesa);
 						System.out.println();
 						objUsuarioDAO.novaTransacaoBD(valDesp, descDesp,
@@ -199,7 +199,18 @@ public class Program {
 						break;
 					}
 
-				case 5:
+				case 5: 
+					System.out.println("Deseja limpar todos os dados? Essa ação é irreversível (y/n)");
+					char respostaLimparDados = sc.next().charAt(0);
+					if(respostaLimparDados=='y') {
+						objUsuarioDAO.limparDados(conta.getUsuarioId());
+						objUsuarioDAO.carregaInfo(conta);
+						System.out.println();
+						break;
+					} else {
+						System.out.println("Retornando ao menu");
+					}
+				case 6:
 					System.out.println("Deseja sair? [y/n]");
 					respAl = sc.next().charAt(0);
 					System.out.println("Programa encerrado.");

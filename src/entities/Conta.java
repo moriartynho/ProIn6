@@ -3,6 +3,8 @@ package entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import entities.dao.ContaDAO;
+
 public class Conta {
 
 	private Integer usuarioId;
@@ -84,14 +86,14 @@ public class Conta {
 		this.transacoes = transac;
 	}
 
-	public void novaTransacao(Double valor, String desc, String data, boolean tipo) {
+	public void novaTransacao(Integer id, Double valor, String desc, String data, boolean tipo) {
 		if (tipo == true) {
-			receitas.add(new Receita(valor, desc, data));
-			transacoes.add(new Transac(valor, desc, data, tipo));
+			receitas.add(new Receita(id, valor, desc, data));
+			transacoes.add(new Transac(id, valor, desc, data, tipo));
 			atualizaSaldoReceita();
 		} else {
-			despesas.add(new Despesa(valor, desc, data));
-			transacoes.add(new Transac(valor, desc, data, tipo));
+			despesas.add(new Despesa(id, valor, desc, data));
+			transacoes.add(new Transac(id, valor, desc, data, tipo));
 			atualizaSaldoDespesa();
 		}
 		atualizaSaldo();
@@ -127,14 +129,20 @@ public class Conta {
 
 	public void removerReceita(Integer i) {
 		int in = i - 1;
+		ContaDAO obj = new ContaDAO();
+		obj.removeNoBD(receitas.get(in).getId());
 		receitas.remove(in);
+
 		atualizaSaldoReceita();
 		atualizaSaldo();
 	}
 
 	public void removerDespesa(Integer i) {
 		int in = i - 1;
+		ContaDAO obj = new ContaDAO();
+		obj.removeNoBD(despesas.get(in).getId());
 		despesas.remove(in);
+
 		atualizaSaldoDespesa();
 		atualizaSaldo();
 	}

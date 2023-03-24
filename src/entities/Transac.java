@@ -2,35 +2,36 @@ package entities;
 
 public class Transac {
 	private Integer id;
-	private Double quant;
-	private String desc;
+	private Double valor;
+	private String descricao;
 	private String data;
 	private Boolean eRenda;
 
 	public Transac() {
 	}
 
-	public Transac(double quant, String desc, String data, boolean isRend) {
-		this.quant = quant;
-		this.desc = desc;
+	public Transac(Integer id, double quant, String desc, String data, boolean isRend) {
+		this.id = id;
+		this.valor = quant;
+		this.descricao = desc;
 		this.data = data;
 		this.eRenda = isRend;
 	}
 
 	public double getQuant() {
-		return quant;
+		return valor;
 	}
 
 	public void setQuant(double quant) {
-		this.quant = quant;
+		this.valor = quant;
 	}
 
 	public String getDesc() {
-		return desc;
+		return descricao;
 	}
 
 	public void setEdsc(String desc) {
-		this.desc = desc;
+		this.descricao = desc;
 	}
 
 	public String getData() {
@@ -65,16 +66,7 @@ public class Transac {
 	}
 
 	public void setQuant(Double quant) {
-		this.quant = quant;
-	}
-
-	public void setDesc(String desc) {
-		this.desc = desc;
-	}
-
-	@Override
-	public String toString() {
-		return "R$ " + quant + " - " + testeTipo(isRend()) + " (" + data + ") - " + desc;
+		this.valor = quant;
 	}
 
 	public Integer getId() {
@@ -83,6 +75,15 @@ public class Transac {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public void setDesc(String desc) {
+		this.descricao = desc;
+	}
+
+	@Override
+	public String toString() {
+		return id + " - " + "R$ " + valor + " - " + testeTipo(isRend()) + " (" + data + ") - " + descricao;
 	}
 
 }

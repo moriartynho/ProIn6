@@ -1,6 +1,7 @@
 package entities;
 
 public class Despesa {
+	private Integer id;
 	private Double valor;
 	private String desc;
 	private String data;
@@ -8,8 +9,8 @@ public class Despesa {
 	public Despesa() {
 	}
 	
-	public Despesa(Double valor, String desc, String data) {
-		super();
+	public Despesa(Integer id, Double valor, String desc, String data) {
+		this.id = id;
 		this.valor = valor;
 		this.desc = desc;
 		this.data = data;
@@ -42,5 +43,13 @@ public class Despesa {
 	@Override
 	public String toString() {
 		return "R$ " + valor + " - " +  desc + " (" + data + ")";
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 }

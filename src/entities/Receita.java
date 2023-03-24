@@ -1,16 +1,16 @@
 package entities;
 
 public class Receita {
-	
+	private Integer id;
 	private Double valor;
 	private String desc;
 	private String data;
-	
+
 	public Receita() {
 	}
-	
-	public Receita(Double valor, String desc, String data) {
-		super();
+
+	public Receita(Integer id, Double valor, String desc, String data) {
+		this.id = id;
 		this.valor = valor;
 		this.desc = desc;
 		this.data = data;
@@ -42,9 +42,15 @@ public class Receita {
 
 	@Override
 	public String toString() {
-		return "R$ " + valor + " - " +  desc + " (" + data + ")";
+		return "R$ " + valor + " - " + desc + " (" + data + ")";
 	}
-	
-	
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 }
