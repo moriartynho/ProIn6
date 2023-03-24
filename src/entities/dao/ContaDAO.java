@@ -66,8 +66,8 @@ public class ContaDAO {
 				conta.setUsuarioId(rs.getInt("id_usuario"));
 				conta.setNome(rs.getString("nome_usuario"));
 				conta.setSenha(rs.getString("senha_usuario"));
-				conta.setSaldoDespesa(0.0);
 				conta.setSaldo(0.0);
+				conta.setSaldoDespesa(0.0);
 				conta.setSaldoReceita(0.0);
 				carregaInfo(conta);
 			} else {
@@ -81,7 +81,7 @@ public class ContaDAO {
 
 	}
 
-	public void atualizaDados(Double valor, String desc, String data, boolean tipo, Integer usuarioId) {
+	public void novaTransacaoBD(Double valor, String desc, String data, boolean tipo, Integer usuarioId) {
 		conn = new DAOConn().conectBD();
 		String sql = "insert into transac (descricao, valor, tipo, data, usuario_id) values(?, ?, ?, ?, ?)";
 		try {
@@ -96,7 +96,25 @@ public class ContaDAO {
 			pstm.close();
 
 		} catch (SQLException e) {
-			System.out.println("Conta DAO Atualiza: " + e.getMessage());
+			System.out.println("Conta DAO Nova Transacao: " + e.getMessage());
+		}
+	}
+	
+	public void novaTarefaBD(String titulo, String data, Double valor, Integer usuarioId) {
+		conn = new DAOConn().conectBD();
+		String sql = "insert into tarefas (titulo, data, valor, usuario_id) values(?, ?, ?, ?)";
+		try {
+			PreparedStatement pstm = conn.prepareStatement(sql);
+			pstm.setString(1, titulo);
+			pstm.setString(2, data);
+			pstm.setDouble(3, valor);
+			pstm.setInt(4, usuarioId);
+			
+			pstm.execute();
+			pstm.close();
+			
+		} catch (SQLException e) {
+			System.out.println("Conta DAO Nova Tarefa: " + e.getMessage());
 		}
 	}
 	
@@ -113,7 +131,7 @@ public class ContaDAO {
 				Double valor = rs.getDouble("valor");
 				boolean tipo = rs.getBoolean("tipo");
 				String data = rs.getString("data");
-				conta.newTransac(valor, desc, data, tipo);
+				conta.novaTransacao(valor, desc, data, tipo);
 			}
 			
 			

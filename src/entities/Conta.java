@@ -11,24 +11,21 @@ public class Conta {
 	private Double saldo;
 	private Double saldoReceita;
 	private Double saldoDespesa;
-	private List<Transac> transac = new ArrayList<>();
-	private List<Receita> receita = new ArrayList<>();
-	private List<Despesa> despesa = new ArrayList<>();
+	private List<Transac> transacoes = new ArrayList<>();
+	private List<Receita> receitas = new ArrayList<>();
+	private List<Despesa> despesas = new ArrayList<>();
+	private List<Tarefa> tarefas = new ArrayList<>();
 
 	public Conta() {
 	}
 
-	public Conta(Integer usuarioId, String nome, String senha, Double saldo, Double saldoReceita, Double saldoDespesa,
-			List<Transac> transac, List<Receita> receita, List<Despesa> despesa) {
+	public Conta(Integer usuarioId, String nome, String senha, Double saldo, Double saldoReceita, Double saldoDespesa) {
 		this.usuarioId = usuarioId;
 		this.nome = nome;
 		this.senha = senha;
 		this.saldo = saldo;
 		this.saldoReceita = saldoReceita;
 		this.saldoDespesa = saldoDespesa;
-		this.transac = transac;
-		this.receita = receita;
-		this.despesa = despesa;
 	}
 
 	public Integer getUsuarioId() {
@@ -59,6 +56,14 @@ public class Conta {
 		return saldo;
 	}
 
+	public void setSaldoReceita(Double saldoReceita) {
+		this.saldoReceita = saldoReceita;
+	}
+
+	public void setSaldoDespesa(Double saldoDespesa) {
+		this.saldoDespesa = saldoDespesa;
+	}
+
 	public void setSaldo(Double saldo) {
 		this.saldo = saldo;
 	}
@@ -67,79 +72,92 @@ public class Conta {
 		return saldoReceita;
 	}
 
-	public void setSaldoReceita(Double saldoReceita) {
-		this.saldoReceita = saldoReceita;
-	}
-
 	public Double getSaldoDespesa() {
 		return saldoDespesa;
 	}
 
-	public void setSaldoDespesa(Double saldoDespesa) {
-		this.saldoDespesa = saldoDespesa;
-	}
-
 	public List<Transac> getTransac() {
-		return transac;
+		return transacoes;
 	}
 
 	public void setTransac(List<Transac> transac) {
-		this.transac = transac;
+		this.transacoes = transac;
 	}
 
-	public void newTransac(Double valor, String desc, String data, boolean tipo) {
+	public void novaTransacao(Double valor, String desc, String data, boolean tipo) {
 		if (tipo == true) {
-			receita.add(new Receita(valor, desc, data));
-			transac.add(new Transac(valor, desc, data, tipo));
-			atualSaldReceita();
+			receitas.add(new Receita(valor, desc, data));
+			transacoes.add(new Transac(valor, desc, data, tipo));
+			atualizaSaldoReceita();
 		} else {
-			despesa.add(new Despesa(valor, desc, data));
-			transac.add(new Transac(valor, desc, data, tipo));
-			atualSaldDespesa();
+			despesas.add(new Despesa(valor, desc, data));
+			transacoes.add(new Transac(valor, desc, data, tipo));
+			atualizaSaldoDespesa();
 		}
-		atualSaldo();
+		atualizaSaldo();
 
 	}
 
-	public void imprimir() {
-		transac.forEach(t -> System.out.println((transac.indexOf(t) + 1) + " - " + t));
+	public void imprimirTransaacoes() {
+		transacoes.forEach(t -> System.out.println((transacoes.indexOf(t) + 1) + " - " + t));
 	}
 
 	public void imprimeReceita() {
-		receita.forEach(r -> System.out.println((receita.indexOf(r) + 1) + " - " + r));
+		receitas.forEach(r -> System.out.println((receitas.indexOf(r) + 1) + " - " + r));
 	}
 
 	public void imprimeDespesa() {
-		despesa.forEach(d -> System.out.println((despesa.indexOf(d) + 1) + " - " + d));
+		despesas.forEach(d -> System.out.println((despesas.indexOf(d) + 1) + " - " + d));
 	}
 
-	public void atualSaldo() {
+	public void atualizaSaldo() {
 		double novoValor = getSaldoReceita() - getSaldoDespesa();
-		setSaldo(novoValor);
+		this.saldo = novoValor;
 	}
 
-	public void atualSaldDespesa() {
-		Double total = despesa.stream().mapToDouble(d -> d.getValor()).sum();
-		setSaldoDespesa(total);
+	public void atualizaSaldoDespesa() {
+		Double total = despesas.stream().mapToDouble(d -> d.getValor()).sum();
+		this.saldoDespesa = total;
 	}
 
-	public void atualSaldReceita() {
-		Double total = receita.stream().mapToDouble(r -> r.getValor()).sum();
-		setSaldoReceita(total);
+	public void atualizaSaldoReceita() {
+		Double total = receitas.stream().mapToDouble(r -> r.getValor()).sum();
+		this.saldoReceita = total;
 	}
 
-	public void inacRec(Integer i) {
+	public void removerReceita(Integer i) {
 		int in = i - 1;
-		receita.remove(in);
-		atualSaldReceita();
-		atualSaldo();
+		receitas.remove(in);
+		atualizaSaldoReceita();
+		atualizaSaldo();
 	}
 
-	public void inacDesp(Integer i) {
+	public void removerDespesa(Integer i) {
 		int in = i - 1;
-		despesa.remove(in);
-		atualSaldDespesa();
-		atualSaldo();
+		despesas.remove(in);
+		atualizaSaldoDespesa();
+		atualizaSaldo();
+	}
+
+	public List<Tarefa> getTarefas() {
+		return tarefas;
+	}
+
+	public void setTarefas(List<Tarefa> tarefas) {
+		this.tarefas = tarefas;
+	}
+
+	public void novaTarefa(String titulo, String data, double valor) {
+		tarefas.add(new Tarefa(titulo, data, valor));
+	}
+
+	public void removerTarefa(Integer i) {
+		int in = i - 1;
+		tarefas.remove(in);
+	}
+
+	public void imrpimeTarefas() {
+		tarefas.forEach(t -> System.out.println((tarefas.indexOf(t) + 1) + " - " + t));
 	}
 
 }

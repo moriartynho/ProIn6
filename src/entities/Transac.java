@@ -1,10 +1,11 @@
 package entities;
 
 public class Transac {
+	private Integer id;
 	private Double quant;
 	private String desc;
 	private String data;
-	private Boolean isRend;
+	private Boolean eRenda;
 
 	public Transac() {
 	}
@@ -13,7 +14,7 @@ public class Transac {
 		this.quant = quant;
 		this.desc = desc;
 		this.data = data;
-		this.isRend = isRend;
+		this.eRenda = isRend;
 	}
 
 	public double getQuant() {
@@ -41,11 +42,11 @@ public class Transac {
 	}
 
 	public boolean isRend() {
-		return isRend;
+		return eRenda;
 	}
 
 	public void setRend(boolean isRend) {
-		this.isRend = isRend;
+		this.eRenda = isRend;
 	}
 
 	public static String testeTipo(boolean tipo) {
@@ -56,11 +57,11 @@ public class Transac {
 	}
 
 	public Boolean getIsRend() {
-		return isRend;
+		return eRenda;
 	}
 
 	public void setIsRend(Boolean isRend) {
-		this.isRend = isRend;
+		this.eRenda = isRend;
 	}
 
 	public void setQuant(Double quant) {
@@ -74,6 +75,14 @@ public class Transac {
 	@Override
 	public String toString() {
 		return "R$ " + quant + " - " + testeTipo(isRend()) + " (" + data + ") - " + desc;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 }

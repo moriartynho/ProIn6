@@ -19,7 +19,7 @@ public class Program {
 
 		Conta conta = new Conta();
 		LocalDateTime localDate = LocalDateTime.now();
-		boolean income = true, expense = false;
+		boolean receita = true, despesa = false;
 		int respNum = 0, login = 0;
 		char respAl = 'n';
 		String nome, senha;
@@ -64,7 +64,6 @@ public class Program {
 
 					if (rsContaDAO.next()) {
 						objusuarioDAO.iniciarConta(conta);
-						conta.setSaldo(0.0);
 						System.out.println();
 						System.out.println("\nLogin efetuado com sucesso\n");
 						login = 1;
@@ -81,26 +80,24 @@ public class Program {
 
 		while (respAl == 'n') {
 			ContaDAO objUsuarioDAO = new ContaDAO();
-			// objUsuarioDAO.pesquisarConta();
-
 			try {
 
 				System.out.println("Olá, " + conta.getNome() + "\n\nSaldo: " + conta.getSaldo() + "\nReceita: "
 						+ conta.getSaldoReceita() + "\nDespesa: " + conta.getSaldoDespesa() + "\n\n1 - Histórico"
-						+ "\n2 - Receita" + "\n3 - Despesa" + "\n4 - Sair\n");
+						+ "\n2 - Receita" + "\n3 - Despesa" + "\n4 - Tarefa" + "\n5 - Sair\n");
 				respNum = sc.nextInt();
 
 				switch (respNum) {
 				case 1:
-					conta.imprimir();
+					conta.imprimirTransaacoes();
 
 					break;
 
 				case 2:
-					int recResp = 0;
+					int respostaReceita = 0;
 					System.out.println("Selecione uma opção: \n10 - Adicionar Receita\n20 - Remover Receita");
-					recResp = sc.nextInt();
-					switch (recResp) {
+					respostaReceita = sc.nextInt();
+					switch (respostaReceita) {
 					case 10:
 						System.out.println();
 						conta.imprimeReceita();
@@ -108,17 +105,19 @@ public class Program {
 						double valRec = sc.nextDouble();
 						System.out.print("Insira uma descrição: ");
 						String descRec = sc.next();
-						conta.newTransac(valRec, descRec, localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")),
-								income);
+						conta.novaTransacao(valRec, descRec,
+								localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), receita);
 						System.out.println();
-						objUsuarioDAO.atualizaDados(valRec, descRec, localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), expense, conta.getUsuarioId());
+						objUsuarioDAO.novaTransacaoBD(valRec, descRec,
+								localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), despesa,
+								conta.getUsuarioId());
 						break;
 					case 20:
 						System.out.println();
 						conta.imprimeReceita();
 						System.out.print("Indique o número da receita que deseja remover: ");
 						int i = sc.nextInt();
-						conta.inacRec(i);
+						conta.removerReceita(i);
 						conta.imprimeReceita();
 						break;
 
@@ -130,10 +129,10 @@ public class Program {
 					break;
 
 				case 3:
-					int despResp = 0;
+					int respostaDesposa = 0;
 					System.out.println("Selecione uma opção: \n30 - Adicionar Despesa\n40 - Remover Despesa");
-					despResp = sc.nextInt();
-					switch (despResp) {
+					respostaDesposa = sc.nextInt();
+					switch (respostaDesposa) {
 					case 30:
 						System.out.println();
 						conta.imprimeDespesa();
@@ -141,10 +140,12 @@ public class Program {
 						double valDesp = sc.nextDouble();
 						System.out.print("Insira uma descrição: ");
 						String descDesp = sc.next();
-						conta.newTransac(valDesp, descDesp, localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")),
-								expense);
+						conta.novaTransacao(valDesp, descDesp,
+								localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), despesa);
 						System.out.println();
-						objUsuarioDAO.atualizaDados(valDesp, descDesp, localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), expense, conta.getUsuarioId());
+						objUsuarioDAO.novaTransacaoBD(valDesp, descDesp,
+								localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), despesa,
+								conta.getUsuarioId());
 						break;
 
 					case 40:
@@ -152,7 +153,7 @@ public class Program {
 						conta.imprimeDespesa();
 						System.out.print("Indique o número da despesa que deseja remover: ");
 						int i = sc.nextInt();
-						conta.inacDesp(i);
+						conta.removerDespesa(i);
 						conta.imprimeDespesa();
 						break;
 
@@ -162,14 +163,50 @@ public class Program {
 					}
 
 					break;
-
 				case 4:
+					int respostaTarefa = 0;
+					System.out.println("Selecione uma opção: \n50 - Adicionar Tarefa\n60 - Remover Tarefa\n70 - Ver tarefas");
+					respostaTarefa = sc.nextInt();
+					switch (respostaTarefa) {
+					case 50:
+						System.out.println();
+						conta.imrpimeTarefas();
+						System.out.print("Insira um título: ");
+						String titulo = sc.next();
+						System.out.print("Quando pretende realizar essa tarefa? ");
+						String data = sc.next();
+						System.out.print("Qual valor pretende utilizar? R$");
+						double valor = sc.nextDouble();
+						conta.novaTarefa(titulo, data, valor);
+						objUsuarioDAO.novaTarefaBD(titulo, data, valor, conta.getUsuarioId());
+						break;
+					case 60:
+						System.out.println();
+						conta.imrpimeTarefas();
+						System.out.print("Indique o número da tarefa que deseja remover: ");
+						int i = sc.nextInt();
+						conta.removerTarefa(i);
+						conta.imrpimeTarefas();
+						break;
+
+					case 70:
+						System.out.println();
+						System.out.println("Tarefas");
+						conta.imrpimeTarefas();
+
+					default:
+						System.out.println("\nOpção Inválida. Selecione as opções 50 ou 60\n");
+						break;
+					}
+
+				case 5:
 					System.out.println("Deseja sair? [y/n]");
 					respAl = sc.next().charAt(0);
 					System.out.println("Programa encerrado.");
 				default:
 					System.out.println("\nOpção Inválida. Selecione uma opção entre 1 e 4\n");
 					break;
+
 				}
 			} catch (RuntimeException e) {
 				System.out.println(e.getMessage());
