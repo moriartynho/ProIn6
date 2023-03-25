@@ -32,7 +32,8 @@ Os dados das listas de receitas, despesas e tarefas são salvos em em um banco d
 
 Transações (Receitas e Despesas) - armazenadas no banco. Os tipos são definidos por booleanos, sendo "true" = receita e "false" = despesa.
 ___
-![image](https://user-images.githubusercontent.com/67657259/227680117-f3351569-57be-482e-97b1-9e85b979f5f9.png)
+![image](https://user-images.githubusercontent.com/67657259/227682106-9ba6c047-eaba-4c8e-ad36-51844817300b.png)
+
 _____________
 
 Tarefas:
@@ -51,5 +52,6 @@ _____
 Há também um histórico de todas as transações registradas pelo usuário:
 
 _____
-![image](https://user-images.githubusercontent.com/67657259/227681523-1decd6fe-e6cd-4ff9-85c6-ce2885ea6767.png)
+![image](https://user-images.githubusercontent.com/67657259/227682030-ea4cc513-97a1-4dd0-b2a5-a274242f4819.png)
+
 _____
