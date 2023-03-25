@@ -84,7 +84,7 @@ public class Program {
 
 				System.out.println("Olá, " + conta.getNome() + "\n\nSaldo: " + conta.getSaldo() + "\nReceita: "
 						+ conta.getSaldoReceita() + "\nDespesa: " + conta.getSaldoDespesa() + "\n\n1 - Histórico"
-						+ "\n2 - Receita" + "\n3 - Despesa" + "\n4 - Tarefa" +"\n5 - Limpar dados" +"\n6 - Sair\n");
+						+ "\n2 - Receita" + "\n3 - Despesa" + "\n4 - Tarefa" + "\n5 - Limpar dados" + "\n6 - Sair\n");
 				respNum = sc.nextInt();
 
 				switch (respNum) {
@@ -97,6 +97,7 @@ public class Program {
 					int respostaReceita = 0;
 					System.out.println("Selecione uma opção: \n10 - Adicionar Receita\n20 - Remover Receita");
 					respostaReceita = sc.nextInt();
+
 					switch (respostaReceita) {
 					case 10:
 						System.out.println();
@@ -132,6 +133,7 @@ public class Program {
 					int respostaDesposa = 0;
 					System.out.println("Selecione uma opção: \n30 - Adicionar Despesa\n40 - Remover Despesa");
 					respostaDesposa = sc.nextInt();
+
 					switch (respostaDesposa) {
 					case 30:
 						System.out.println();
@@ -165,8 +167,10 @@ public class Program {
 					break;
 				case 4:
 					int respostaTarefa = 0;
-					System.out.println("Selecione uma opção: \n50 - Adicionar Tarefa\n60 - Remover Tarefa\n70 - Ver tarefas");
+					System.out.println(
+							"Selecione uma opção: \n50 - Adicionar Tarefa\n60 - Remover Tarefa\n70 - Ver tarefas");
 					respostaTarefa = sc.nextInt();
+
 					switch (respostaTarefa) {
 					case 50:
 						System.out.println();
@@ -188,32 +192,37 @@ public class Program {
 						conta.removerTarefa(i);
 						conta.imrpimeTarefas();
 						break;
+						
 
 					case 70:
 						System.out.println();
 						System.out.println("Tarefas");
 						conta.imrpimeTarefas();
+						break;
 
 					default:
-						System.out.println("\nOpção Inválida. Selecione as opções 50 ou 60\n");
+						System.out.println("\nOpção Inválida. Selecione as opções 50, 60 ou 70\n");
 						break;
 					}
+					break;
 
-				case 5: 
+				case 5:
 					System.out.println("Deseja limpar todos os dados? Essa ação é irreversível (y/n)");
 					char respostaLimparDados = sc.next().charAt(0);
-					if(respostaLimparDados=='y') {
+					if (respostaLimparDados == 'y') {
 						objUsuarioDAO.limparDados(conta.getUsuarioId());
 						objUsuarioDAO.carregaInfo(conta);
 						System.out.println();
 						break;
 					} else {
 						System.out.println("Retornando ao menu");
+						break;
 					}
 				case 6:
 					System.out.println("Deseja sair? [y/n]");
 					respAl = sc.next().charAt(0);
 					System.out.println("Programa encerrado.");
+					break;
 				default:
 					System.out.println("\nOpção Inválida. Selecione uma opção entre 1 e 4\n");
 					break;

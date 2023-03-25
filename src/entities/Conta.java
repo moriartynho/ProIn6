@@ -78,14 +78,6 @@ public class Conta {
 		return saldoDespesa;
 	}
 
-	public List<Transac> getTransac() {
-		return transacoes;
-	}
-
-	public void setTransac(List<Transac> transac) {
-		this.transacoes = transac;
-	}
-
 	public void novaTransacao(Integer id, Double valor, String desc, String data, boolean tipo) {
 		if (tipo == true) {
 			receitas.add(new Receita(id, valor, desc, data));
@@ -145,14 +137,6 @@ public class Conta {
 
 		atualizaSaldoDespesa();
 		atualizaSaldo();
-	}
-
-	public List<Tarefa> getTarefas() {
-		return tarefas;
-	}
-
-	public void setTarefas(List<Tarefa> tarefas) {
-		this.tarefas = tarefas;
 	}
 
 	public void novaTarefa(String titulo, String data, double valor) {

@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import entities.Conta;
 import services.DAOConn;
@@ -12,7 +11,6 @@ import services.DAOConn;
 public class ContaDAO {
 
 	Connection conn = null;
-	ArrayList<Conta> list = new ArrayList<>();
 
 	public ResultSet autenticacaoConta(Conta objContaDTO) {
 		conn = new DAOConn().conectBD();
