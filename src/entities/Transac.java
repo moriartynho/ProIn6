@@ -83,7 +83,7 @@ public class Transac {
 
 	@Override
 	public String toString() {
-		return id + " - " + "R$ " + valor + " - " + testeTipo(isRend()) + " (" + data + ") - " + descricao;
+		return "R$ " + valor + " - " + testeTipo(isRend()) + " (" + data + ") - " + descricao;
 	}
 
 }

@@ -110,7 +110,7 @@ public class Program {
 								localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), receita);
 						System.out.println();
 						objUsuarioDAO.novaTransacaoBD(valRec, descRec,
-								localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), despesa,
+								localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), receita,
 								conta.getUsuarioId());
 						break;
 					case 20:
