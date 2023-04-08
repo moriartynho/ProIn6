@@ -4,12 +4,13 @@ import entities.Conta;
 import entities.Despesa;
 import entities.Receita;
 import entities.Tarefa;
-import entities.Transac;
-import entities.dao.ContaDAO;
+import entities.Transacao;
+import services.dao.ContaDAOService;
 
 /**
  * 
  * Classe de serviços da classe Conta
+ * 
  * @author moriartynho
  *
  */
@@ -21,14 +22,13 @@ public class ContaService {
 		this.conta = conta;
 	}
 
-	public void novaTransacao(Integer id, Double valor, String desc, String data, boolean tipo) {
-		if (tipo == true) {
-			conta.getReceitas().add(new Receita(id, valor, desc, data));
-			conta.getTransacoes().add(new Transac(id, valor, desc, data, tipo));
+	public void novaTransacao(Transacao transacao) {
+		conta.getTransacoes().add(transacao);
+		if (transacao.getIsRend() == true) {
+			conta.getReceitas().add(new Receita(null, transacao.getValor(), transacao.getDesc(), transacao.getData()));
 			atualizaSaldoReceita();
 		} else {
-			conta.getDespesas().add(new Despesa(id, valor, desc, data));
-			conta.getTransacoes().add(new Transac(id, valor, desc, data, tipo));
+			conta.getDespesas().add(new Despesa(null, transacao.getValor(), transacao.getDesc(), transacao.getData()));
 			atualizaSaldoDespesa();
 		}
 		atualizaSaldo();
@@ -64,7 +64,7 @@ public class ContaService {
 
 	public void removerReceita(Integer i) {
 		int in = i - 1;
-		ContaDAO obj = new ContaDAO();
+		ContaDAOService obj = new ContaDAOService();
 		obj.removeNoBD(conta.getReceitas().get(in).getId());
 		conta.getReceitas().remove(in);
 
@@ -74,7 +74,7 @@ public class ContaService {
 
 	public void removerDespesa(Integer i) {
 		int in = i - 1;
-		ContaDAO obj = new ContaDAO();
+		ContaDAOService obj = new ContaDAOService();
 		obj.removeNoBD(conta.getDespesas().get(in).getId());
 		conta.getDespesas().remove(in);
 
@@ -82,8 +82,8 @@ public class ContaService {
 		atualizaSaldo();
 	}
 
-	public void novaTarefa(String titulo, String data, double valor) {
-		conta.getTarefas().add(new Tarefa(titulo, data, valor));
+	public void novaTarefa(Tarefa tarefa) {
+		conta.getTarefas().add(new Tarefa(tarefa.getTitulo(), tarefa.getData(), tarefa.getValor()));
 	}
 
 	public void removerTarefa(Integer i) {

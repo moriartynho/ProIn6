@@ -8,8 +8,10 @@ import java.util.Locale;
 import java.util.Scanner;
 
 import entities.Conta;
-import entities.dao.ContaDAO;
+import entities.Tarefa;
+import entities.Transacao;
 import services.ContaService;
+import services.dao.ContaDAOService;
 
 /**
  * Classe que inicializa o programa
@@ -49,7 +51,7 @@ public class Program {
 					conta.setNome(nome);
 					conta.setSenha(senha);
 
-					ContaDAO objusuarioDAO = new ContaDAO();
+					ContaDAOService objusuarioDAO = new ContaDAOService();
 					objusuarioDAO.cadastrarConta(conta);
 					System.out.println();
 					System.out.println("Cadastro realizado");
@@ -67,7 +69,7 @@ public class Program {
 					conta.setNome(nome);
 					conta.setSenha(senha);
 
-					objusuarioDAO = new ContaDAO();
+					objusuarioDAO = new ContaDAOService();
 
 					ResultSet rsContaDAO = objusuarioDAO.autenticacaoConta(conta);
 
@@ -88,7 +90,7 @@ public class Program {
 		}
 
 		while (respAl == 'n') {
-			ContaDAO objUsuarioDAO = new ContaDAO();
+			ContaDAOService objUsuarioDAO = new ContaDAOService();
 			try {
 
 				System.out.println(
@@ -126,17 +128,9 @@ public class Program {
 						double valRec = sc.nextDouble();
 						System.out.print("Insira uma descrição: ");
 						String descRec = sc.next();
-						contaService.novaTransacao(null, 
-								valRec, 
-								descRec,
-								localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")),
-								receita);
+						contaService.novaTransacao(new Transacao(null, valRec, descRec, localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), receita));
 						System.out.println();
-						objUsuarioDAO.novaTransacaoBD(valRec, 
-								descRec,
-								localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), 
-								receita,
-								conta.getUsuarioId());
+						objUsuarioDAO.novaTransacaoBD(new Transacao(null, valRec, descRec, localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), receita), conta.getUsuarioId());
 						break;
 					case 20:
 						System.out.println();
@@ -155,32 +149,24 @@ public class Program {
 					break;
 
 				case 3:
-					int respostaDesposa = 0;
+					int respostaDespesa = 0;
 					System.out.println(
 							"Selecione uma opção: "
 							+ "\n30 - Adicionar Despesa"
 							+ "\n40 - Remover Despesa");
-					respostaDesposa = sc.nextInt();
+					respostaDespesa = sc.nextInt();
 
-					switch (respostaDesposa) {
+					switch (respostaDespesa) {
 					case 30:
 						System.out.println();
 						contaService.imprimeDespesa();
 						System.out.print("Insira um valor: R$ ");
-						double valDesp = sc.nextDouble();
+						double valorDespesa = sc.nextDouble();
 						System.out.print("Insira uma descrição: ");
-						String descDesp = sc.next();
-						contaService.novaTransacao(null, 
-								valDesp, 
-								descDesp,
-								localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), 
-								despesa);
+						String descricaoDespesa = sc.next();
+						contaService.novaTransacao(new Transacao(null, valorDespesa, descricaoDespesa, localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), despesa));
 						System.out.println();
-						objUsuarioDAO.novaTransacaoBD(valDesp, 
-								descDesp,
-								localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), 
-								despesa,
-								conta.getUsuarioId());
+						objUsuarioDAO.novaTransacaoBD(new Transacao(null, valorDespesa, descricaoDespesa, localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), despesa), conta.getUsuarioId());
 						break;
 
 					case 40:
@@ -214,8 +200,8 @@ public class Program {
 						String data = sc.next();
 						System.out.print("Qual valor pretende utilizar? R$");
 						double valor = sc.nextDouble();
-						contaService.novaTarefa(titulo, data, valor);
-						objUsuarioDAO.novaTarefaBD(titulo, data, valor, conta.getUsuarioId());
+						contaService.novaTarefa(new Tarefa(titulo, data, valor));
+						objUsuarioDAO.novaTarefaBD(new Tarefa(titulo, data, valor), conta.getUsuarioId());
 						break;
 					case 60:
 						System.out.println();

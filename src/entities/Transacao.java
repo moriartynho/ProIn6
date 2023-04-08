@@ -2,30 +2,32 @@ package entities;
 
 /**
  * 
- * Classe que representa uma transação realizada pelo usuário. Possui um id que é passado para o Banco de Dados
- * , possui também valor, descrição, data e tipo (Receita ou Despesa)
+ * Classe que representa uma transação realizada pelo usuário. Possui um id que
+ * é passado para o Banco de Dados , possui também valor, descrição, data e tipo
+ * (Receita ou Despesa)
+ * 
  * @author moriartynho
  *
  */
-public class Transac {
+public class Transacao {
 	private Integer id;
 	private Double valor;
 	private String descricao;
 	private String data;
-	private Boolean eRenda;
+	private Boolean tipo;
 
-	public Transac() {
+	public Transacao() {
 	}
 
-	public Transac(Integer id, double quant, String desc, String data, boolean isRend) {
+	public Transacao(Integer id, double quant, String desc, String data, boolean tipo) {
 		this.id = id;
 		this.valor = quant;
 		this.descricao = desc;
 		this.data = data;
-		this.eRenda = isRend;
+		this.tipo = tipo;
 	}
 
-	public double getQuant() {
+	public double getValor() {
 		return valor;
 	}
 
@@ -49,12 +51,12 @@ public class Transac {
 		this.data = data;
 	}
 
-	public boolean isRend() {
-		return eRenda;
+	public boolean getTipo() {
+		return tipo;
 	}
 
-	public void setRend(boolean isRend) {
-		this.eRenda = isRend;
+	public void setTipo(boolean isRend) {
+		this.tipo = isRend;
 	}
 
 	public static String testeTipo(boolean tipo) {
@@ -65,11 +67,11 @@ public class Transac {
 	}
 
 	public Boolean getIsRend() {
-		return eRenda;
+		return tipo;
 	}
 
 	public void setIsRend(Boolean isRend) {
-		this.eRenda = isRend;
+		this.tipo = isRend;
 	}
 
 	public void setQuant(Double quant) {
@@ -90,7 +92,7 @@ public class Transac {
 
 	@Override
 	public String toString() {
-		return "R$ " + valor + " - " + testeTipo(isRend()) + " (" + data + ") - " + descricao;
+		return "R$ " + valor + " - " + testeTipo(getTipo()) + " (" + data + ") - " + descricao;
 	}
 
 }

@@ -1,15 +1,17 @@
-package entities.dao;
+package services.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import connection.DAOConn;
 import entities.Conta;
+import entities.Tarefa;
+import entities.Transacao;
 import services.ContaService;
-import services.DAOConn;
 
-public class ContaDAO {
+public class ContaDAOService {
 
 	Connection conn = null;
 
@@ -78,15 +80,15 @@ public class ContaDAO {
 
 	}
 
-	public void novaTransacaoBD(Double valor, String desc, String data, boolean tipo, Integer usuarioId) {
+	public void novaTransacaoBD(Transacao transacao, Integer usuarioId) {
 		conn = new DAOConn().conectBD();
 		String sql = "insert into transac (descricao, valor, tipo, data, usuario_id) values(?, ?, ?, ?, ?)";
 		try {
 			PreparedStatement pstm = conn.prepareStatement(sql);
-			pstm.setString(1, desc);
-			pstm.setDouble(2, valor);
-			pstm.setBoolean(3, tipo);
-			pstm.setString(4, data);
+			pstm.setString(1, transacao.getDesc());
+			pstm.setDouble(2, transacao.getValor());
+			pstm.setBoolean(3, transacao.getTipo());
+			pstm.setString(4, transacao.getData());
 			pstm.setInt(5, usuarioId);
 
 			pstm.execute();
@@ -97,14 +99,14 @@ public class ContaDAO {
 		}
 	}
 
-	public void novaTarefaBD(String titulo, String data, Double valor, Integer usuarioId) {
+	public void novaTarefaBD(Tarefa tarefa, Integer usuarioId) {
 		conn = new DAOConn().conectBD();
 		String sql = "insert into tarefas (titulo, data, valor, usuario_id) values(?, ?, ?, ?)";
 		try {
 			PreparedStatement pstm = conn.prepareStatement(sql);
-			pstm.setString(1, titulo);
-			pstm.setString(2, data);
-			pstm.setDouble(3, valor);
+			pstm.setString(1, tarefa.getTitulo());
+			pstm.setString(2, tarefa.getData());
+			pstm.setDouble(3, tarefa.getValor());
 			pstm.setInt(4, usuarioId);
 
 			pstm.execute();
@@ -130,7 +132,7 @@ public class ContaDAO {
 				Double valor = rs.getDouble("valor");
 				boolean tipo = rs.getBoolean("tipo");
 				String data = rs.getString("data");
-				service.novaTransacao(id, valor, desc, data, tipo);
+				service.novaTransacao(new Transacao(id, valor, desc, data, tipo));
 			}
 
 		} catch (SQLException e) {

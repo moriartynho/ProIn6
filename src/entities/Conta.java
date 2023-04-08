@@ -17,7 +17,7 @@ public class Conta {
 	private Double saldo;
 	private Double saldoReceita;
 	private Double saldoDespesa;
-	private List<Transac> transacoes = new ArrayList<>();
+	private List<Transacao> transacoes = new ArrayList<>();
 	private List<Receita> receitas = new ArrayList<>();
 	private List<Despesa> despesas = new ArrayList<>();
 	private List<Tarefa> tarefas = new ArrayList<>();
@@ -82,7 +82,7 @@ public class Conta {
 		return saldoDespesa;
 	}
 
-	public List<Transac> getTransacoes() {
+	public List<Transacao> getTransacoes() {
 		return transacoes;
 	}
 
