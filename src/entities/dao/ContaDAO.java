@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import entities.Conta;
+import services.ContaService;
 import services.DAOConn;
 
 public class ContaDAO {
@@ -115,6 +116,7 @@ public class ContaDAO {
 	}
 
 	public void carregaInfo(Conta conta) {
+		ContaService service = new ContaService(conta);
 		conn = new DAOConn().conectBD();
 		String sql = "select * from transac WHERE usuario_id = ?";
 		try {
@@ -128,7 +130,7 @@ public class ContaDAO {
 				Double valor = rs.getDouble("valor");
 				boolean tipo = rs.getBoolean("tipo");
 				String data = rs.getString("data");
-				conta.novaTransacao(id, valor, desc, data, tipo);
+				service.novaTransacao(id, valor, desc, data, tipo);
 			}
 
 		} catch (SQLException e) {

@@ -3,8 +3,12 @@ package entities;
 import java.util.ArrayList;
 import java.util.List;
 
-import entities.dao.ContaDAO;
-
+/**
+ * Classe que representa a conta de um usuário.
+ * 
+ * @author moriartynho
+ *
+ */
 public class Conta {
 
 	private Integer usuarioId;
@@ -78,78 +82,20 @@ public class Conta {
 		return saldoDespesa;
 	}
 
-	public void novaTransacao(Integer id, Double valor, String desc, String data, boolean tipo) {
-		if (tipo == true) {
-			receitas.add(new Receita(id, valor, desc, data));
-			transacoes.add(new Transac(id, valor, desc, data, tipo));
-			atualizaSaldoReceita();
-		} else {
-			despesas.add(new Despesa(id, valor, desc, data));
-			transacoes.add(new Transac(id, valor, desc, data, tipo));
-			atualizaSaldoDespesa();
-		}
-		atualizaSaldo();
-
+	public List<Transac> getTransacoes() {
+		return transacoes;
 	}
 
-	public void imprimirTransaacoes() {
-		transacoes.forEach(t -> System.out.println((transacoes.indexOf(t) + 1) + " - " + t));
+	public List<Receita> getReceitas() {
+		return receitas;
 	}
 
-	public void imprimeReceita() {
-		receitas.forEach(r -> System.out.println((receitas.indexOf(r) + 1) + " - " + r));
+	public List<Despesa> getDespesas() {
+		return despesas;
 	}
 
-	public void imprimeDespesa() {
-		despesas.forEach(d -> System.out.println((despesas.indexOf(d) + 1) + " - " + d));
-	}
-
-	public void atualizaSaldo() {
-		double novoValor = getSaldoReceita() - getSaldoDespesa();
-		this.saldo = novoValor;
-	}
-
-	public void atualizaSaldoDespesa() {
-		Double total = despesas.stream().mapToDouble(d -> d.getValor()).sum();
-		this.saldoDespesa = total;
-	}
-
-	public void atualizaSaldoReceita() {
-		Double total = receitas.stream().mapToDouble(r -> r.getValor()).sum();
-		this.saldoReceita = total;
-	}
-
-	public void removerReceita(Integer i) {
-		int in = i - 1;
-		ContaDAO obj = new ContaDAO();
-		obj.removeNoBD(receitas.get(in).getId());
-		receitas.remove(in);
-
-		atualizaSaldoReceita();
-		atualizaSaldo();
-	}
-
-	public void removerDespesa(Integer i) {
-		int in = i - 1;
-		ContaDAO obj = new ContaDAO();
-		obj.removeNoBD(despesas.get(in).getId());
-		despesas.remove(in);
-
-		atualizaSaldoDespesa();
-		atualizaSaldo();
-	}
-
-	public void novaTarefa(String titulo, String data, double valor) {
-		tarefas.add(new Tarefa(titulo, data, valor));
-	}
-
-	public void removerTarefa(Integer i) {
-		int in = i - 1;
-		tarefas.remove(in);
-	}
-
-	public void imrpimeTarefas() {
-		tarefas.forEach(t -> System.out.println((tarefas.indexOf(t) + 1) + " - " + t));
+	public List<Tarefa> getTarefas() {
+		return tarefas;
 	}
 
 }

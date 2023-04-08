@@ -1,5 +1,12 @@
 package entities;
 
+/**
+ * 
+ * Classe que representa uma transação realizada pelo usuário. Possui um id que é passado para o Banco de Dados
+ * , possui também valor, descrição, data e tipo (Receita ou Despesa)
+ * @author moriartynho
+ *
+ */
 public class Transac {
 	private Integer id;
 	private Double valor;
