@@ -10,7 +10,8 @@ import java.util.Scanner;
 import entities.Conta;
 import entities.Tarefa;
 import entities.Transacao;
-import services.ContaService;
+import services.TransacaoService;
+import services.TarefaService;
 import services.dao.ContaDAOService;
 
 /**
@@ -26,7 +27,8 @@ public class Program {
 		Locale.setDefault(Locale.US);
 
 		Conta conta = new Conta();
-		ContaService contaService = new ContaService(conta);
+		TransacaoService contaService = new TransacaoService();
+		TarefaService tarefaService = new TarefaService();
 		LocalDateTime localDate = LocalDateTime.now();
 		boolean receita = true, despesa = false;
 		int respNum = 0, login = 0;
@@ -108,7 +110,7 @@ public class Program {
 
 				switch (respNum) {
 				case 1:
-					contaService.imprimirTransacoes();
+					contaService.imprimirTransacoes(conta);
 
 					break;
 
@@ -123,22 +125,22 @@ public class Program {
 					switch (respostaReceita) {
 					case 10:
 						System.out.println();
-						contaService.imprimeReceita();
+						contaService.imprimeReceita(conta);
 						System.out.print("Insira um valor: R$ ");
 						double valRec = sc.nextDouble();
 						System.out.print("Insira uma descrição: ");
 						String descRec = sc.next();
-						contaService.novaTransacao(new Transacao(null, valRec, descRec, localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), receita));
+						contaService.novaTransacao(conta,new Transacao(null, valRec, descRec, localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), receita));
 						System.out.println();
 						objUsuarioDAO.novaTransacaoBD(new Transacao(null, valRec, descRec, localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), receita), conta.getUsuarioId());
 						break;
 					case 20:
 						System.out.println();
-						contaService.imprimeReceita();
+						contaService.imprimeReceita(conta);
 						System.out.print("Indique o número da receita que deseja remover: ");
 						int i = sc.nextInt();
-						contaService.removerReceita(i);
-						contaService.imprimeReceita();
+						contaService.removerReceita(conta,i);
+						contaService.imprimeReceita(conta);
 						break;
 
 					default:
@@ -159,23 +161,23 @@ public class Program {
 					switch (respostaDespesa) {
 					case 30:
 						System.out.println();
-						contaService.imprimeDespesa();
+						contaService.imprimeDespesa(conta);
 						System.out.print("Insira um valor: R$ ");
 						double valorDespesa = sc.nextDouble();
 						System.out.print("Insira uma descrição: ");
 						String descricaoDespesa = sc.next();
-						contaService.novaTransacao(new Transacao(null, valorDespesa, descricaoDespesa, localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), despesa));
+						contaService.novaTransacao(conta, new Transacao(null, valorDespesa, descricaoDespesa, localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), despesa));
 						System.out.println();
 						objUsuarioDAO.novaTransacaoBD(new Transacao(null, valorDespesa, descricaoDespesa, localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), despesa), conta.getUsuarioId());
 						break;
 
 					case 40:
 						System.out.println();
-						contaService.imprimeDespesa();
+						contaService.imprimeDespesa(conta);
 						System.out.print("Indique o número da despesa que deseja remover: ");
 						int i = sc.nextInt();
-						contaService.removerDespesa(i);
-						contaService.imprimeDespesa();
+						contaService.removerDespesa(conta, i);
+						contaService.imprimeDespesa(conta);
 						break;
 
 					default:
@@ -193,30 +195,30 @@ public class Program {
 					switch (respostaTarefa) {
 					case 50:
 						System.out.println();
-						contaService.imrpimeTarefas();
+						tarefaService.imrpimeTarefas(conta);
 						System.out.print("Insira um título: ");
 						String titulo = sc.next();
 						System.out.print("Quando pretende realizar essa tarefa? ");
 						String data = sc.next();
 						System.out.print("Qual valor pretende utilizar? R$");
 						double valor = sc.nextDouble();
-						contaService.novaTarefa(new Tarefa(titulo, data, valor));
+						tarefaService.novaTarefa(conta, new Tarefa(titulo, data, valor));
 						objUsuarioDAO.novaTarefaBD(new Tarefa(titulo, data, valor), conta.getUsuarioId());
 						break;
 					case 60:
 						System.out.println();
-						contaService.imrpimeTarefas();
+						tarefaService.imrpimeTarefas(conta);
 						System.out.print("Indique o número da tarefa que deseja remover: ");
 						int i = sc.nextInt();
-						contaService.removerTarefa(i);
-						contaService.imrpimeTarefas();
+						tarefaService.removerTarefa(conta, i);
+						tarefaService.imrpimeTarefas(conta);
 						break;
 						
 
 					case 70:
 						System.out.println();
 						System.out.println("Tarefas");
-						contaService.imrpimeTarefas();
+						tarefaService.imrpimeTarefas(conta);
 						break;
 
 					default:

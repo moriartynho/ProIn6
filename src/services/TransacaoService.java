@@ -3,7 +3,6 @@ package services;
 import entities.Conta;
 import entities.Despesa;
 import entities.Receita;
-import entities.Tarefa;
 import entities.Transacao;
 import services.dao.ContaDAOService;
 
@@ -14,84 +13,69 @@ import services.dao.ContaDAOService;
  * @author moriartynho
  *
  */
-public class ContaService {
+public class TransacaoService {
 
-	private Conta conta;
-
-	public ContaService(Conta conta) {
-		this.conta = conta;
-	}
-
-	public void novaTransacao(Transacao transacao) {
-		conta.getTransacoes().add(transacao);
-		if (transacao.getIsRend() == true) {
-			conta.getReceitas().add(new Receita(null, transacao.getValor(), transacao.getDesc(), transacao.getData()));
-			atualizaSaldoReceita();
-		} else {
+	public void novaTransacao(Conta conta, Transacao transacao) {
+		if (transacao.getValor() >= 0) {
+			conta.getTransacoes().add(transacao);
+			if (transacao.getIsRend() == true) {
+				conta.getReceitas().add(new Receita(null, transacao.getValor(), transacao.getDesc(), transacao.getData()));
+				atualizaSaldoReceita(conta);
+			}
 			conta.getDespesas().add(new Despesa(null, transacao.getValor(), transacao.getDesc(), transacao.getData()));
-			atualizaSaldoDespesa();
-		}
-		atualizaSaldo();
+			atualizaSaldoDespesa(conta);
+
+		} else
+			throw new IllegalArgumentException("Valor deve ser maior que 0");
+		atualizaSaldo(conta);
 
 	}
 
-	public void imprimirTransacoes() {
+	public void imprimirTransacoes(Conta conta) {
 		conta.getTransacoes().forEach(t -> System.out.println((conta.getTransacoes().indexOf(t) + 1) + " - " + t));
 	}
 
-	public void imprimeReceita() {
+	public void imprimeReceita(Conta conta) {
 		conta.getReceitas().forEach(r -> System.out.println((conta.getReceitas().indexOf(r) + 1) + " - " + r));
 	}
 
-	public void imprimeDespesa() {
+	public void imprimeDespesa(Conta conta) {
 		conta.getDespesas().forEach(d -> System.out.println((conta.getDespesas().indexOf(d) + 1) + " - " + d));
 	}
 
-	public void atualizaSaldo() {
+	public void atualizaSaldo(Conta conta) {
 		double novoValor = conta.getSaldoReceita() - conta.getSaldoDespesa();
 		conta.setSaldo(novoValor);
 	}
 
-	public void atualizaSaldoDespesa() {
+	public void atualizaSaldoDespesa(Conta conta) {
 		Double total = conta.getDespesas().stream().mapToDouble(d -> d.getValor()).sum();
 		conta.setSaldoDespesa(total);
 	}
 
-	public void atualizaSaldoReceita() {
+	public void atualizaSaldoReceita(Conta conta) {
 		Double total = conta.getReceitas().stream().mapToDouble(r -> r.getValor()).sum();
 		conta.setSaldo(total);
 	}
 
-	public void removerReceita(Integer i) {
+	public void removerReceita(Conta conta, Integer i) {
 		int in = i - 1;
 		ContaDAOService obj = new ContaDAOService();
 		obj.removeNoBD(conta.getReceitas().get(in).getId());
 		conta.getReceitas().remove(in);
 
-		atualizaSaldoReceita();
-		atualizaSaldo();
+		atualizaSaldoReceita(conta);
+		atualizaSaldo(conta);
 	}
 
-	public void removerDespesa(Integer i) {
+	public void removerDespesa(Conta conta, Integer i) {
 		int in = i - 1;
 		ContaDAOService obj = new ContaDAOService();
 		obj.removeNoBD(conta.getDespesas().get(in).getId());
 		conta.getDespesas().remove(in);
 
-		atualizaSaldoDespesa();
-		atualizaSaldo();
+		atualizaSaldoDespesa(conta);
+		atualizaSaldo(conta);
 	}
 
-	public void novaTarefa(Tarefa tarefa) {
-		conta.getTarefas().add(new Tarefa(tarefa.getTitulo(), tarefa.getData(), tarefa.getValor()));
-	}
-
-	public void removerTarefa(Integer i) {
-		int in = i - 1;
-		conta.getTarefas().remove(in);
-	}
-
-	public void imrpimeTarefas() {
-		conta.getTarefas().forEach(t -> System.out.println((conta.getTarefas().indexOf(t) + 1) + " - " + t));
-	}
 }

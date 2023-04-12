@@ -9,7 +9,7 @@ import connection.DAOConn;
 import entities.Conta;
 import entities.Tarefa;
 import entities.Transacao;
-import services.ContaService;
+import services.TransacaoService;
 
 public class ContaDAOService {
 
@@ -118,7 +118,7 @@ public class ContaDAOService {
 	}
 
 	public void carregaInfo(Conta conta) {
-		ContaService service = new ContaService(conta);
+		TransacaoService service = new TransacaoService();
 		conn = new DAOConn().conectBD();
 		String sql = "select * from transac WHERE usuario_id = ?";
 		try {
@@ -132,7 +132,7 @@ public class ContaDAOService {
 				Double valor = rs.getDouble("valor");
 				boolean tipo = rs.getBoolean("tipo");
 				String data = rs.getString("data");
-				service.novaTransacao(new Transacao(id, valor, desc, data, tipo));
+				service.novaTransacao(conta, new Transacao(id, valor, desc, data, tipo));
 			}
 
 		} catch (SQLException e) {
