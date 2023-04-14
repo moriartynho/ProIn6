@@ -8,10 +8,12 @@ import java.util.Locale;
 import java.util.Scanner;
 
 import entities.Conta;
+import entities.Despesa;
+import entities.Receita;
 import entities.Tarefa;
-import entities.Transacao;
-import services.TransacaoService;
+import entities.enums.TipoDeTransacao;
 import services.TarefaService;
+import services.TransacaoService;
 import services.dao.ContaDAOService;
 
 /**
@@ -30,7 +32,6 @@ public class Program {
 		TransacaoService contaService = new TransacaoService();
 		TarefaService tarefaService = new TarefaService();
 		LocalDateTime localDate = LocalDateTime.now();
-		boolean receita = true, despesa = false;
 		int respNum = 0, login = 0;
 		char respAl = 'n';
 		String nome, senha;
@@ -130,16 +131,16 @@ public class Program {
 						double valRec = sc.nextDouble();
 						System.out.print("Insira uma descrição: ");
 						String descRec = sc.next();
-						contaService.novaTransacao(conta,new Transacao(null, valRec, descRec, localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), receita));
+						contaService.novaTransacao(conta, new Receita(null, valRec, descRec, localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), TipoDeTransacao.RECEITA));
 						System.out.println();
-						objUsuarioDAO.novaTransacaoBD(new Transacao(null, valRec, descRec, localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), receita), conta.getUsuarioId());
+						objUsuarioDAO.novaTransacaoBD(new Receita(null, valRec, descRec, localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), TipoDeTransacao.RECEITA), conta.getUsuarioId());
 						break;
 					case 20:
 						System.out.println();
 						contaService.imprimeReceita(conta);
 						System.out.print("Indique o número da receita que deseja remover: ");
 						int i = sc.nextInt();
-						contaService.removerReceita(conta,i);
+						contaService.removerTransacao(conta,i);
 						contaService.imprimeReceita(conta);
 						break;
 
@@ -166,9 +167,9 @@ public class Program {
 						double valorDespesa = sc.nextDouble();
 						System.out.print("Insira uma descrição: ");
 						String descricaoDespesa = sc.next();
-						contaService.novaTransacao(conta, new Transacao(null, valorDespesa, descricaoDespesa, localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), despesa));
+						contaService.novaTransacao(conta, new Despesa(null, valorDespesa, descricaoDespesa, localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), TipoDeTransacao.DESPESA));
 						System.out.println();
-						objUsuarioDAO.novaTransacaoBD(new Transacao(null, valorDespesa, descricaoDespesa, localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), despesa), conta.getUsuarioId());
+						objUsuarioDAO.novaTransacaoBD(new Despesa(null, valorDespesa, descricaoDespesa, localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), TipoDeTransacao.DESPESA), conta.getUsuarioId());
 						break;
 
 					case 40:
@@ -176,7 +177,7 @@ public class Program {
 						contaService.imprimeDespesa(conta);
 						System.out.print("Indique o número da despesa que deseja remover: ");
 						int i = sc.nextInt();
-						contaService.removerDespesa(conta, i);
+						contaService.removerTransacao(conta, i);
 						contaService.imprimeDespesa(conta);
 						break;
 

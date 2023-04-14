@@ -1,5 +1,7 @@
 package entities;
 
+import entities.enums.TipoDeTransacao;
+
 /**
  * 
  * Classe que representa uma transação realizada pelo usuário. Possui um id que
@@ -10,21 +12,22 @@ package entities;
  *
  */
 public class Transacao {
+
 	private Integer id;
-	private Double valor;
-	private String descricao;
-	private String data;
-	private Boolean tipo;
+	protected Double valor;
+	protected String descricao;
+	protected String data;
+	protected Boolean tipoDeTransacao;
 
 	public Transacao() {
 	}
 
-	public Transacao(Integer id, double quant, String desc, String data, boolean tipo) {
+	public Transacao(Integer id, Double valor, String descricao, String data, TipoDeTransacao tipoDeTransacao) {
 		this.id = id;
-		this.valor = quant;
-		this.descricao = desc;
+		this.valor = valor;
+		this.descricao = descricao;
 		this.data = data;
-		this.tipo = tipo;
+		this.setTipoDeTransacao(tipoDeTransacao);
 	}
 
 	public double getValor() {
@@ -51,29 +54,6 @@ public class Transacao {
 		this.data = data;
 	}
 
-	public boolean getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(boolean isRend) {
-		this.tipo = isRend;
-	}
-
-	public static String testeTipo(boolean tipo) {
-		if (tipo == true) {
-			return "Entrada";
-		} else
-			return "Saída";
-	}
-
-	public Boolean getIsRend() {
-		return tipo;
-	}
-
-	public void setIsRend(Boolean isRend) {
-		this.tipo = isRend;
-	}
-
 	public void setQuant(Double quant) {
 		this.valor = quant;
 	}
@@ -89,10 +69,20 @@ public class Transacao {
 	public void setDesc(String desc) {
 		this.descricao = desc;
 	}
+	
+	public TipoDeTransacao getTipoDeTransacao() {
+		return tipoDeTransacao;
+	}
+
+	public void setTipoDeTransacao(TipoDeTransacao tipoDeTransacao) {
+		this.tipoDeTransacao = tipoDeTransacao;
+	}
 
 	@Override
 	public String toString() {
-		return "R$ " + valor + " - " + testeTipo(getTipo()) + " (" + data + ") - " + descricao;
+		return "R$ " + valor + " - " + getTipoDeTransacao() + " (" + data + ") - " + descricao;
 	}
+
+	
 
 }

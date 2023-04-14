@@ -14,24 +14,16 @@ public class Conta {
 	private Integer usuarioId;
 	private String nome;
 	private String senha;
-	private Double saldo;
-	private Double saldoReceita;
-	private Double saldoDespesa;
 	private List<Transacao> transacoes = new ArrayList<>();
-	private List<Receita> receitas = new ArrayList<>();
-	private List<Despesa> despesas = new ArrayList<>();
 	private List<Tarefa> tarefas = new ArrayList<>();
 
 	public Conta() {
 	}
 
-	public Conta(Integer usuarioId, String nome, String senha, Double saldo, Double saldoReceita, Double saldoDespesa) {
+	public Conta(Integer usuarioId, String nome, String senha) {
 		this.usuarioId = usuarioId;
 		this.nome = nome;
 		this.senha = senha;
-		this.saldo = saldo;
-		this.saldoReceita = saldoReceita;
-		this.saldoDespesa = saldoDespesa;
 	}
 
 	public Integer getUsuarioId() {
@@ -58,44 +50,31 @@ public class Conta {
 		this.senha = senha;
 	}
 
-	public Double getSaldo() {
-		return saldo;
-	}
-
-	public void setSaldoReceita(Double saldoReceita) {
-		this.saldoReceita = saldoReceita;
-	}
-
-	public void setSaldoDespesa(Double saldoDespesa) {
-		this.saldoDespesa = saldoDespesa;
-	}
-
-	public void setSaldo(Double saldo) {
-		this.saldo = saldo;
-	}
-
-	public Double getSaldoReceita() {
-		return saldoReceita;
-	}
-
-	public Double getSaldoDespesa() {
-		return saldoDespesa;
+	public List<Tarefa> getTarefas() {
+		return tarefas;
 	}
 
 	public List<Transacao> getTransacoes() {
 		return transacoes;
 	}
 
-	public List<Receita> getReceitas() {
-		return receitas;
+	public void setTransacoes(List<Transacao> transacoes) {
+		this.transacoes = transacoes;
 	}
 
-	public List<Despesa> getDespesas() {
-		return despesas;
+	public String getSaldo() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	public List<Tarefa> getTarefas() {
-		return tarefas;
+	public String getSaldoReceita() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getSaldoDespesa() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
