@@ -5,6 +5,10 @@ import entities.Despesa;
 import entities.Receita;
 import entities.Transacao;
 import services.dao.ContaDAOService;
+import services.transacoes.InsercaoDeTransacao;
+import services.transacoes.SemTransacao;
+import services.transacoes.despesa.InserirDespesa;
+import services.transacoes.receita.InserirReceita;
 
 /**
  * 
@@ -17,17 +21,17 @@ public class TransacaoService {
 
 	public void novaTransacao(Conta conta, Transacao transacao) {
 		if (transacao.getValor() >= 0) {
+
 			conta.getTransacoes().add(transacao);
-			if (transacao.getIsRend() == true) {
-				conta.getReceitas().add(new Receita(null, transacao.getValor(), transacao.getDesc(), transacao.getData()));
-				atualizaSaldoReceita(conta);
-			}
-			conta.getDespesas().add(new Despesa(null, transacao.getValor(), transacao.getDesc(), transacao.getData()));
+			
+			InsercaoDeTransacao novaTransacao = new InserirReceita(new InserirDespesa(new SemTransacao()));
+			
+			atualizaSaldoReceita(conta);
 			atualizaSaldoDespesa(conta);
+			atualizaSaldo(conta);
 
 		} else
 			throw new IllegalArgumentException("Valor deve ser maior que 0");
-		atualizaSaldo(conta);
 
 	}
 
