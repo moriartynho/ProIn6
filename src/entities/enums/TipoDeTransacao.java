@@ -2,20 +2,18 @@ package entities.enums;
 
 public enum TipoDeTransacao {
 
-	RECEITA(true), DESPESA(false);
+	RECEITA {
+		@Override
+		public Boolean getTipo() {
+			return true;
+		}
+	}, DESPESA {
+		@Override
+		public Boolean getTipo() {
+			return false;
+		}
+	};
 
-	private Boolean tipo;
-
-	TipoDeTransacao(boolean tipo) {
-		this.setTipo(tipo);
-	}
-
-	public Boolean getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(Boolean tipo) {
-		this.tipo = tipo;
-	}
-
+	public abstract Boolean getTipo();
+	
 }

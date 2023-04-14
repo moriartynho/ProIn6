@@ -4,9 +4,6 @@ import entities.enums.TipoDeTransacao;
 
 public class Despesa extends Transacao {
 
-	public Despesa() {
-	}
-
 	public Despesa(Integer id, Double valor, String descricao, String data, TipoDeTransacao tipoDeTransacao) {
 		super(id, valor, descricao, data, tipoDeTransacao);
 	}

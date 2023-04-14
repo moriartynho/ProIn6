@@ -85,7 +85,7 @@ public class ContaDAOService {
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, transacao.getDesc());
 			pstm.setDouble(2, transacao.getValor());
-			pstm.setBoolean(3, transacao.getTipoDeTransacao());
+			pstm.setBoolean(3, (transacao.getTipoDeTransacao().getTipo()));
 			pstm.setString(4, transacao.getData());
 			pstm.setInt(5, usuarioId);
 
@@ -128,9 +128,9 @@ public class ContaDAOService {
 				Integer id = rs.getInt("id_transac");
 				String desc = rs.getString("descricao");
 				Double valor = rs.getDouble("valor");
-				Boolean tipo = rs.getBoolean("tipo");
+				TipoDeTransacao tipo = (rs.getBoolean("tipo") == true) ? TipoDeTransacao.RECEITA : TipoDeTransacao.DESPESA;
 				String data = rs.getString("data");
-				service.novaTransacao(conta, new Transacao(id, valor, desc, data, TipoDeTransacao.valueOf(tipo)));
+				service.novaTransacao(conta, new Transacao(id, valor, desc, data, tipo));
 			}
 
 		} catch (SQLException e) {

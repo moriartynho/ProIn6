@@ -17,7 +17,7 @@ public class Transacao {
 	protected Double valor;
 	protected String descricao;
 	protected String data;
-	protected Boolean tipoDeTransacao;
+	protected TipoDeTransacao tipoDeTransacao;
 
 	public Transacao() {
 	}
@@ -27,7 +27,7 @@ public class Transacao {
 		this.valor = valor;
 		this.descricao = descricao;
 		this.data = data;
-		this.setTipoDeTransacao(tipoDeTransacao);
+		this.tipoDeTransacao = tipoDeTransacao;
 	}
 
 	public double getValor() {
@@ -82,6 +82,8 @@ public class Transacao {
 	public String toString() {
 		return "R$ " + valor + " - " + getTipoDeTransacao() + " (" + data + ") - " + descricao;
 	}
+
+	
 
 	
 

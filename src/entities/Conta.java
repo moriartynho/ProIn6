@@ -3,6 +3,8 @@ package entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import entities.enums.TipoDeTransacao;
+
 /**
  * Classe que representa a conta de um usuário.
  * 
@@ -62,19 +64,20 @@ public class Conta {
 		this.transacoes = transacoes;
 	}
 
-	public String getSaldo() {
-		// TODO Auto-generated method stub
-		return null;
+	public Double getSaldo() {
+		return (getSaldoReceita() - getSaldoDespesa());
 	}
 
-	public String getSaldoReceita() {
-		// TODO Auto-generated method stub
-		return null;
+	public Double getSaldoReceita() {
+		return transacoes.stream()
+				.filter(t -> t.getTipoDeTransacao() == TipoDeTransacao.RECEITA)
+				.mapToDouble(r -> r.getValor()).sum();
 	}
 
-	public String getSaldoDespesa() {
-		// TODO Auto-generated method stub
-		return null;
+	public Double getSaldoDespesa() {
+		return transacoes.stream()
+				.filter(t -> t.getTipoDeTransacao() == TipoDeTransacao.DESPESA)
+				.mapToDouble(r -> r.getValor()).sum();
 	}
 
 }

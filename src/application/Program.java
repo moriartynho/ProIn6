@@ -95,7 +95,7 @@ public class Program {
 		while (respAl == 'n') {
 			ContaDAOService objUsuarioDAO = new ContaDAOService();
 			try {
-
+				System.out.println("*************************");
 				System.out.println(
 						"Olá, " + conta.getNome() 
 						+ "\n\nSaldo: " + conta.getSaldo() + 
@@ -107,6 +107,7 @@ public class Program {
 						+ "\n4 - Tarefa" 
 						+ "\n5 - Limpar dados" 
 						+ "\n6 - Sair\n");
+				System.out.println("*************************");
 				respNum = sc.nextInt();
 
 				switch (respNum) {
@@ -125,18 +126,18 @@ public class Program {
 
 					switch (respostaReceita) {
 					case 10:
-						System.out.println();
+						System.out.println("*************************");
 						contaService.imprimeReceita(conta);
 						System.out.print("Insira um valor: R$ ");
 						double valRec = sc.nextDouble();
 						System.out.print("Insira uma descrição: ");
 						String descRec = sc.next();
 						contaService.novaTransacao(conta, new Receita(null, valRec, descRec, localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), TipoDeTransacao.RECEITA));
-						System.out.println();
+						System.out.println("*************************");
 						objUsuarioDAO.novaTransacaoBD(new Receita(null, valRec, descRec, localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), TipoDeTransacao.RECEITA), conta.getUsuarioId());
 						break;
 					case 20:
-						System.out.println();
+						System.out.println("*************************");
 						contaService.imprimeReceita(conta);
 						System.out.print("Indique o número da receita que deseja remover: ");
 						int i = sc.nextInt();
@@ -161,19 +162,19 @@ public class Program {
 
 					switch (respostaDespesa) {
 					case 30:
-						System.out.println();
+						System.out.println("*************************");
 						contaService.imprimeDespesa(conta);
 						System.out.print("Insira um valor: R$ ");
 						double valorDespesa = sc.nextDouble();
 						System.out.print("Insira uma descrição: ");
 						String descricaoDespesa = sc.next();
 						contaService.novaTransacao(conta, new Despesa(null, valorDespesa, descricaoDespesa, localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), TipoDeTransacao.DESPESA));
-						System.out.println();
+						System.out.println("*************************");
 						objUsuarioDAO.novaTransacaoBD(new Despesa(null, valorDespesa, descricaoDespesa, localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), TipoDeTransacao.DESPESA), conta.getUsuarioId());
 						break;
 
 					case 40:
-						System.out.println();
+						System.out.println("*************************");
 						contaService.imprimeDespesa(conta);
 						System.out.print("Indique o número da despesa que deseja remover: ");
 						int i = sc.nextInt();
@@ -195,7 +196,7 @@ public class Program {
 
 					switch (respostaTarefa) {
 					case 50:
-						System.out.println();
+						System.out.println("*************************");
 						tarefaService.imrpimeTarefas(conta);
 						System.out.print("Insira um título: ");
 						String titulo = sc.next();
@@ -207,7 +208,7 @@ public class Program {
 						objUsuarioDAO.novaTarefaBD(new Tarefa(titulo, data, valor), conta.getUsuarioId());
 						break;
 					case 60:
-						System.out.println();
+						System.out.println("*************************");
 						tarefaService.imrpimeTarefas(conta);
 						System.out.print("Indique o número da tarefa que deseja remover: ");
 						int i = sc.nextInt();
@@ -217,7 +218,7 @@ public class Program {
 						
 
 					case 70:
-						System.out.println();
+						System.out.println("*************************");
 						System.out.println("Tarefas");
 						tarefaService.imrpimeTarefas(conta);
 						break;
@@ -234,7 +235,7 @@ public class Program {
 					if (respostaLimparDados == 'y') {
 						objUsuarioDAO.limparDados(conta.getUsuarioId());
 						objUsuarioDAO.carregaInfo(conta);
-						System.out.println();
+						System.out.println("*************************");
 						break;
 					} else {
 						System.out.println("Retornando ao menu");
