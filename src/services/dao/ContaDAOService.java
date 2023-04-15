@@ -9,6 +9,7 @@ import connection.DAOConn;
 import entities.Conta;
 import entities.Tarefa;
 import entities.Transacao;
+import entities.enums.TipoDeTransacao;
 import services.TransacaoService;
 
 public class ContaDAOService {
@@ -65,9 +66,6 @@ public class ContaDAOService {
 				conta.setUsuarioId(rs.getInt("id_usuario"));
 				conta.setNome(rs.getString("nome_usuario"));
 				conta.setSenha(rs.getString("senha_usuario"));
-				conta.setSaldo(0.0);
-				conta.setSaldoDespesa(0.0);
-				conta.setSaldoReceita(0.0);
 				carregaInfo(conta);
 			} else {
 				System.out.println("Erro ao iniciar");
@@ -87,7 +85,7 @@ public class ContaDAOService {
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, transacao.getDesc());
 			pstm.setDouble(2, transacao.getValor());
-			pstm.setBoolean(3, transacao.getTipo());
+			pstm.setBoolean(3, (transacao.getTipoDeTransacao().getTipo()));
 			pstm.setString(4, transacao.getData());
 			pstm.setInt(5, usuarioId);
 
@@ -127,10 +125,10 @@ public class ContaDAOService {
 			ResultSet rs = pstm.executeQuery();
 
 			while (rs.next()) {
-				Integer id = rs.getInt("id_transac");
+				Integer id = rs.getInt("id");
 				String desc = rs.getString("descricao");
 				Double valor = rs.getDouble("valor");
-				boolean tipo = rs.getBoolean("tipo");
+				TipoDeTransacao tipo = (rs.getBoolean("tipo") == true) ? TipoDeTransacao.RECEITA : TipoDeTransacao.DESPESA;
 				String data = rs.getString("data");
 				service.novaTransacao(conta, new Transacao(id, valor, desc, data, tipo));
 			}
