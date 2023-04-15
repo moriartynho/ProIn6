@@ -11,12 +11,13 @@ public class TransacaoValorMaiorQueZero extends NovaTransacao {
 
 	@Override
 	public void inserir(Transacao transacao, Conta conta) {
-		if (transacao.getValor() >= 0) {
+		conta.getTransacoes().add(transacao);
 
-			conta.getTransacoes().add(transacao);
+	}
 
-		} else proxima.inserir(transacao, conta);
-			
+	@Override
+	public boolean verificar(Transacao transacao) {
+		return transacao.getValor() > 0;
 	}
 
 }

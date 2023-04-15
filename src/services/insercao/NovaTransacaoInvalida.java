@@ -14,4 +14,9 @@ public class NovaTransacaoInvalida extends NovaTransacao {
 		throw new IllegalArgumentException("Valor deve ser maior que 0");
 	}
 
+	@Override
+	public boolean verificar(Transacao transacao) {
+		return true;
+	}
+
 }

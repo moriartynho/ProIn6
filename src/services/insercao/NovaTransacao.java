@@ -11,7 +11,16 @@ public abstract class NovaTransacao {
 		this.proxima = proxima;
 	}
 	
-	public abstract void inserir(Transacao transacao, Conta conta);
+	public void efetuarInsercao(Transacao transacao, Conta conta) {
+		if(verificar(transacao)) {
+			inserir(transacao, conta);
+		}else proxima.efetuarInsercao(transacao, conta);
+		
+	}
+	
+	protected abstract void inserir(Transacao transacao, Conta conta);
+	protected abstract boolean verificar(Transacao transacao);
+	
 	
 	
 }
