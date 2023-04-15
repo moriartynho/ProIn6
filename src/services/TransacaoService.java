@@ -19,7 +19,7 @@ public class TransacaoService {
 
 	public void novaTransacao(Conta conta, Transacao transacao) {
 		NovaTransacao novaTransacao = new TransacaoValorMaiorQueZero(new NovaTransacaoInvalida());
-		novaTransacao.inserir(transacao, conta);
+		novaTransacao.efetuarInsercao(transacao, conta);
 
 	}
 
