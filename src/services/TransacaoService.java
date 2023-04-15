@@ -4,6 +4,9 @@ import entities.Conta;
 import entities.Transacao;
 import entities.enums.TipoDeTransacao;
 import services.dao.ContaDAOService;
+import services.insercao.NovaTransacao;
+import services.insercao.NovaTransacaoInvalida;
+import services.insercao.TransacaoValorMaiorQueZero;
 
 /**
  * 
@@ -15,12 +18,8 @@ import services.dao.ContaDAOService;
 public class TransacaoService {
 
 	public void novaTransacao(Conta conta, Transacao transacao) {
-		if (transacao.getValor() >= 0) {
-
-			conta.getTransacoes().add(transacao);
-
-		} else
-			throw new IllegalArgumentException("Valor deve ser maior que 0");
+		NovaTransacao novaTransacao = new TransacaoValorMaiorQueZero(new NovaTransacaoInvalida());
+		novaTransacao.inserir(transacao, conta);
 
 	}
 

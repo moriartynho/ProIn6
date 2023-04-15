@@ -125,7 +125,7 @@ public class ContaDAOService {
 			ResultSet rs = pstm.executeQuery();
 
 			while (rs.next()) {
-				Integer id = rs.getInt("id_transac");
+				Integer id = rs.getInt("id");
 				String desc = rs.getString("descricao");
 				Double valor = rs.getDouble("valor");
 				TipoDeTransacao tipo = (rs.getBoolean("tipo") == true) ? TipoDeTransacao.RECEITA : TipoDeTransacao.DESPESA;

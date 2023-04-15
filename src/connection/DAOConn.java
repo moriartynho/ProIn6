@@ -11,7 +11,7 @@ public class DAOConn {
 		Connection conn = null;
 		
 		try {
-			String url = "jdbc:mysql://localhost:3306/pi6bd?user=root&password=";
+			String url = "jdbc:mysql://localhost:3306/pi6bd1?user=root&password=";
 			conn = DriverManager.getConnection(url);
 			
 		} catch (SQLException e) {
